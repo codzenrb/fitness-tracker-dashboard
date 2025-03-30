@@ -18,7 +18,8 @@ import {
   Download,
   Clipboard,
   Check,
-  MessageSquare
+  MessageSquare,
+  Award
 } from 'lucide-react';
 import { toPng } from 'html-to-image';
 import { saveAs } from 'file-saver';
@@ -142,10 +143,10 @@ export default function ShareAchievement({
           </Button>
         )}
       </DialogTrigger>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md bg-gray-900 border-gray-800">
         <DialogHeader>
-          <DialogTitle>Share Your Achievement</DialogTitle>
-          <DialogDescription>
+          <DialogTitle className="text-gray-100">Share Your Achievement</DialogTitle>
+          <DialogDescription className="text-gray-400">
             Share your fitness milestone with friends and followers
           </DialogDescription>
         </DialogHeader>
@@ -154,20 +155,20 @@ export default function ShareAchievement({
         <div className="p-1 mt-2 mb-4 rounded-lg border border-gray-700 overflow-hidden">
           <div 
             ref={achievementRef} 
-            className="w-full px-5 py-6 bg-gray-900 rounded-md"
+            className="w-full px-5 py-6 bg-gray-900 rounded-md bg-gradient-to-br from-gray-900 to-gray-950"
           >
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center">
                 <div className={`gradient-${type === 'goal' ? 'purple' : type === 'workout' ? 'blue' : 'green'} p-2 rounded-full mr-3`}>
-                  {icon || <Share2 className="h-5 w-5 text-white" />}
+                  {icon || <Award className="h-5 w-5 text-white" />}
                 </div>
                 <div>
-                  <h3 className="font-bold text-white text-lg">{title}</h3>
+                  <h3 className="font-bold text-gray-100 text-lg">{title}</h3>
                   {date && <p className="text-xs text-gray-400">{date}</p>}
                 </div>
               </div>
               <div className="flex flex-col items-end">
-                {value && <span className="text-sm font-semibold text-white">{value}</span>}
+                {value && <span className="text-sm font-semibold text-gray-100">{value}</span>}
                 {progress !== undefined && (
                   <div className="w-16 h-1.5 bg-gray-800 rounded-full mt-1">
                     <div 
@@ -183,7 +184,7 @@ export default function ShareAchievement({
             {/* Watermark */}
             <div className="mt-4 flex items-center justify-between border-t border-gray-800 pt-3">
               <div className="text-xs text-gray-500">Powered by Fitness Tracker</div>
-              <div className="text-xs text-primary">#FitnessJourney</div>
+              <div className="text-xs text-purple-400">#FitnessJourney</div>
             </div>
           </div>
         </div>
