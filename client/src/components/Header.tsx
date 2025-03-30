@@ -1,8 +1,24 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { useUser } from "@/contexts/UserContext";
+import { Button } from "@/components/ui/button";
+import { LogOut } from "lucide-react"; 
 
 export default function Header() {
+  const { user, logout } = useUser();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  // Get user initials for the avatar
+  const getInitials = () => {
+    if (!user.name) return "FT";
+    const nameParts = user.name.split(" ");
+    if (nameParts.length === 1) return nameParts[0].charAt(0).toUpperCase();
+    return (nameParts[0].charAt(0) + nameParts[nameParts.length - 1].charAt(0)).toUpperCase();
+  };
+
+  const handleLogout = () => {
+    logout();
+  };
 
   return (
     <header className="py-4 px-6 flex justify-between items-center sticky top-0 z-10 bg-white/70 backdrop-blur-md border border-white/25 rounded-b-lg">
@@ -66,10 +82,19 @@ export default function Header() {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            JS
+            {getInitials()}
           </motion.div>
-          <span className="hidden md:inline text-sm font-medium">John Smith</span>
+          <span className="hidden md:inline text-sm font-medium">{user.name}</span>
         </div>
+        
+        <Button 
+          variant="ghost" 
+          size="icon"
+          onClick={handleLogout}
+          className="text-neutral-600 hover:text-red-500"
+        >
+          <LogOut className="h-5 w-5" />
+        </Button>
         
         <div className="md:hidden">
           <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="p-2">
@@ -90,6 +115,13 @@ export default function Header() {
           <a href="#" className="p-2 hover:bg-neutral-100 rounded-lg text-neutral-700">Workouts</a>
           <a href="#" className="p-2 hover:bg-neutral-100 rounded-lg text-neutral-700">Nutrition</a>
           <a href="#" className="p-2 hover:bg-neutral-100 rounded-lg text-neutral-700">Progress</a>
+          <button 
+            onClick={handleLogout}
+            className="p-2 hover:bg-red-50 rounded-lg text-red-500 flex items-center gap-2"
+          >
+            <LogOut className="h-4 w-4" />
+            <span>Logout</span>
+          </button>
         </motion.div>
       )}
     </header>

@@ -9,8 +9,10 @@ import ActivitySection from "./ActivitySection";
 import GoalsSection from "./GoalsSection";
 import ClockSection from "./ClockSection";
 import TipsSection from "./TipsSection";
+import { useUser } from "@/contexts/UserContext";
 
 export default function Dashboard() {
+  const { user, logout } = useUser();
   const [currentDate, setCurrentDate] = useState("");
 
   useEffect(() => {
@@ -56,7 +58,7 @@ export default function Dashboard() {
         >
           <motion.div variants={itemVariants} className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
             <div>
-              <h2 className="text-3xl font-heading font-semibold">Hello, John 👋</h2>
+              <h2 className="text-3xl font-heading font-semibold">Hello, {user.name || 'Fitness Enthusiast'} 👋</h2>
               <p className="text-neutral-600 mt-1">Here's your fitness summary for today</p>
             </div>
             

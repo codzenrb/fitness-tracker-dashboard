@@ -1,6 +1,5 @@
 import { ReactNode } from "react";
 import { cn } from "@/lib/utils";
-import { motion } from "framer-motion";
 
 interface GlassmorphismProps {
   children: ReactNode;
@@ -9,15 +8,15 @@ interface GlassmorphismProps {
 
 export function Glassmorphism({ children, className }: GlassmorphismProps) {
   return (
-    <motion.div 
+    <div
       className={cn(
-        "bg-white/70 backdrop-blur-md rounded-lg border border-white/25",
+        "rounded-xl border border-gray-200 bg-white/40 p-6 backdrop-blur-md",
+        "shadow-[0_8px_30px_rgb(0,0,0,0.03)]",
+        "border-opacity-70",
         className
       )}
-      whileHover={{ boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)" }}
-      transition={{ duration: 0.3 }}
     >
       {children}
-    </motion.div>
+    </div>
   );
 }
