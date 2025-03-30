@@ -7,7 +7,7 @@ import {
   DialogTitle,
   DialogDescription, 
 } from "@/components/ui/dialog";
-import { Pencil, Check, X, Trash, Calendar, Share2, Award } from "lucide-react";
+import { Pencil, Check, X, Trash, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -17,7 +17,6 @@ import { Calendar as CalendarComponent } from "@/components/ui/calendar";
 import { apiRequest } from "@/lib/queryClient";
 import { toast } from "@/hooks/use-toast";
 import { format } from "date-fns";
-import ShareAchievement from "./ShareAchievement";
 
 export type ActivityItemProps = {
   id?: number;
@@ -212,55 +211,28 @@ export default function EditableActivity({
   return (
     <>
       <motion.div 
-        className="p-3 rounded-lg hover:bg-neutral-200/10 dark:hover:bg-gray-800/40 transition-colors group"
+        className="flex items-center p-3 rounded-lg hover:bg-neutral-200/50 transition-colors group"
       >
-        <div className="flex items-center">
-          <div className={`w-10 h-10 flex items-center justify-center rounded-full ${iconBg} ${iconColor}`}>
-            <i className={`bx ${icon} text-xl`}></i>
-          </div>
-          <div className="ml-4 flex-1">
-            <h4 className="font-medium">{title}</h4>
-            <p className="text-sm text-gray-400">{details}</p>
-          </div>
-          <div className="flex items-center">
-            <div className={`px-3 py-1 rounded-full ${statusColor} text-xs font-medium mr-2`}>
-              {status}
-            </div>
-            <motion.button 
-              onClick={() => setIsEditDialogOpen(true)}
-              className="p-2 rounded-full hover:bg-gray-800/60 transition-colors opacity-0 group-hover:opacity-100"
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-            >
-              <Pencil className="h-4 w-4 text-gray-400" />
-            </motion.button>
-          </div>
+        <div className={`w-10 h-10 flex items-center justify-center rounded-full ${iconBg} ${iconColor}`}>
+          <i className={`bx ${icon} text-xl`}></i>
         </div>
-        
-        {/* Show share button for completed activities */}
-        {status === "Completed" && (
-          <div className="mt-2 flex justify-end">
-            <ShareAchievement
-              title={title}
-              description={description || title}
-              date={date instanceof Date ? format(date, "MMM d, yyyy") : format(new Date(date), "MMM d, yyyy")}
-              type="activity"
-              value={`${duration} mins${caloriesBurned ? ` | ${caloriesBurned} cal` : ''}`}
-              triggerComponent={
-                <motion.button 
-                  className="bg-gray-800/60 hover:bg-gray-800/80 text-gray-300 text-xs py-1 px-3 rounded-full transition-colors"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <span className="flex items-center justify-center gap-1">
-                    <Share2 className="h-3 w-3" />
-                    Share
-                  </span>
-                </motion.button>
-              }
-            />
+        <div className="ml-4 flex-1">
+          <h4 className="font-medium">{title}</h4>
+          <p className="text-sm text-neutral-600">{details}</p>
+        </div>
+        <div className="flex items-center">
+          <div className={`px-3 py-1 rounded-full ${statusColor} text-xs font-medium mr-2`}>
+            {status}
           </div>
-        )}
+          <motion.button 
+            onClick={() => setIsEditDialogOpen(true)}
+            className="p-2 rounded-full hover:bg-neutral-200 transition-colors opacity-0 group-hover:opacity-100"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+          >
+            <Pencil className="h-4 w-4 text-neutral-600" />
+          </motion.button>
+        </div>
       </motion.div>
       
       {/* Edit Activity Dialog */}

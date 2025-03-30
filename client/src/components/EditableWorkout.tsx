@@ -8,7 +8,7 @@ import {
   DialogTitle,
   DialogDescription, 
 } from "@/components/ui/dialog";
-import { Pencil, Check, X, Trash, Clock, Calendar, Share2, Award } from "lucide-react";
+import { Pencil, Check, X, Trash, Clock, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -18,7 +18,6 @@ import { Calendar as CalendarComponent } from "@/components/ui/calendar";
 import { apiRequest } from "@/lib/queryClient";
 import { toast } from "@/hooks/use-toast";
 import { format, addHours, parseISO, isToday, formatDistance } from "date-fns";
-import ShareAchievement from "./ShareAchievement";
 
 export type WorkoutItemProps = {
   id?: number;
@@ -360,45 +359,6 @@ export default function EditableWorkout({
                 Complete Workout
               </span>
             </motion.button>
-          </div>
-        )}
-        
-        {status === "Completed" && completedAt && (
-          <div className="mt-3">
-            <div className="flex items-center justify-between mb-2">
-              <div className="flex items-center gap-2">
-                <Award className="h-4 w-4 text-yellow-500" />
-                <span className="text-sm text-gray-300">
-                  Completed {format(
-                    typeof completedAt === 'string' ? new Date(completedAt) : completedAt,
-                    "MMM d, yyyy 'at' h:mm a"
-                  )}
-                </span>
-              </div>
-            </div>
-            
-            <ShareAchievement
-              title={title}
-              description={`Completed a ${duration} minute workout${caloriesBurned ? ` burning ${caloriesBurned} calories` : ''}`}
-              date={completedAt ? format(
-                typeof completedAt === 'string' ? new Date(completedAt) : completedAt,
-                "MMM d, yyyy"
-              ) : undefined}
-              type="workout"
-              value={`${duration} mins`}
-              triggerComponent={
-                <motion.button 
-                  className="w-full py-2 rounded-lg gradient-blue text-white transition-all shadow-md button-glow"
-                  whileHover={{ scale: 1.02, boxShadow: "0 6px 15px rgba(59, 130, 246, 0.25)" }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <span className="flex items-center justify-center gap-2">
-                    <Share2 className="h-4 w-4" />
-                    Share Achievement
-                  </span>
-                </motion.button>
-              }
-            />
           </div>
         )}
       </Glassmorphism>

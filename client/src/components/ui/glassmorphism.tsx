@@ -24,17 +24,17 @@ export function Glassmorphism({
   };
 
   const hoverStyles = hoverEffect
-    ? "transition-all duration-300 hover:bg-opacity-30 hover:shadow-lg"
+    ? "transition-all duration-300 hover:bg-opacity-25 hover:shadow-lg"
     : "";
 
   const borderStyles = borderEffect
-    ? "border border-gray-800/60"
+    ? "border border-white/20"
     : "";
 
   return (
     <motion.div
       className={cn(
-        "bg-gray-900 rounded-xl shadow-md",
+        "bg-white rounded-xl shadow-md",
         intensityMap[intensity],
         hoverStyles,
         borderStyles,
@@ -69,20 +69,20 @@ export function GlassmorphicCard({
   return (
     <motion.div
       className={cn(
-        "bg-gray-900 bg-opacity-60 backdrop-blur-md rounded-xl shadow-xl border border-gray-700/30 overflow-hidden",
+        "bg-white bg-opacity-15 backdrop-blur-md rounded-xl shadow-xl border border-white/20 overflow-hidden",
         className
       )}
       whileHover={
         hoverEffect
-          ? { scale: hoverScale, boxShadow: "0 10px 30px rgba(0,0,0,0.3)" }
+          ? { scale: hoverScale, boxShadow: "0 10px 30px rgba(0,0,0,0.1)" }
           : undefined
       }
       transition={{ duration: 0.2 }}
     >
       {(title || icon) && (
-        <div className="flex items-center p-4 border-b border-gray-700/30">
+        <div className="flex items-center p-4 border-b border-white/10">
           {icon && <div className="mr-3">{icon}</div>}
-          {title && <h3 className="font-semibold text-gray-100">{title}</h3>}
+          {title && <h3 className="font-semibold text-neutral-800">{title}</h3>}
         </div>
       )}
       <div className="p-4">{children}</div>
@@ -104,12 +104,12 @@ export function GlassCapsule({
   animated = false,
 }: GlassCapsuleProps) {
   const colorMap = {
-    indigo: "from-indigo-600/30 to-indigo-700/30 border-indigo-500/40",
-    purple: "from-purple-600/30 to-purple-700/30 border-purple-500/40",
-    pink: "from-pink-600/30 to-pink-700/30 border-pink-500/40",
-    blue: "from-blue-600/30 to-blue-700/30 border-blue-500/40",
-    green: "from-green-600/30 to-green-700/30 border-green-500/40",
-    orange: "from-orange-600/30 to-orange-700/30 border-orange-500/40",
+    indigo: "from-indigo-500/20 to-indigo-600/20 border-indigo-500/30",
+    purple: "from-purple-500/20 to-purple-600/20 border-purple-500/30",
+    pink: "from-pink-500/20 to-pink-600/20 border-pink-500/30",
+    blue: "from-blue-500/20 to-blue-600/20 border-blue-500/30",
+    green: "from-green-500/20 to-green-600/20 border-green-500/30",
+    orange: "from-orange-500/20 to-orange-600/20 border-orange-500/30",
   };
 
   return (
@@ -154,17 +154,17 @@ export function GlassPanel({
   children,
   className,
   glow = false,
-  glowColor = "rgba(124, 58, 237, 0.3)", // Purple by default
+  glowColor = "rgba(99, 102, 241, 0.4)", // Indigo by default
 }: GlassPanelProps) {
   return (
     <div className={cn("relative rounded-xl overflow-hidden", className)}>
       {glow && (
         <div
-          className="absolute inset-0 blur-xl opacity-20"
+          className="absolute inset-0 blur-xl opacity-30"
           style={{ backgroundColor: glowColor }}
         />
       )}
-      <div className="relative bg-gray-900 bg-opacity-60 backdrop-blur-lg border border-gray-700/30 rounded-xl shadow-xl p-6">
+      <div className="relative bg-white bg-opacity-10 backdrop-blur-lg border border-white/20 rounded-xl shadow-xl p-6">
         {children}
       </div>
     </div>

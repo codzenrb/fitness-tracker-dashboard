@@ -10,9 +10,8 @@ export function Neumorphic({ children, className }: NeumorphicProps) {
   return (
     <div
       className={cn(
-        "rounded-xl bg-gray-900 p-6",
-        "shadow-[5px_5px_12px_0px_rgba(0,0,0,0.5),-5px_-5px_12px_0px_rgba(30,41,59,0.2)]",
-        "border border-gray-800",
+        "rounded-xl bg-slate-100 p-6",
+        "shadow-[6px_6px_12px_0px_#a3b1c6,-6px_-6px_12px_0px_#ffffff]",
         className
       )}
     >
