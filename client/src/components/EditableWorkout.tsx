@@ -298,23 +298,23 @@ export default function EditableWorkout({
 
   return (
     <>
-      <Glassmorphism className="p-5 transition-all hover:translate-y-[-3px]">
+      <Glassmorphism className="p-5 transition-all card-hover animate-fade-in">
         <div className="flex justify-between items-start">
           <div>
             <div className="flex items-center gap-2">
-              <span className="font-medium text-lg">{title}</span>
-              <span className={`px-2 py-0.5 rounded-full ${statusColor} text-xs`}>{status}</span>
+              <span className="font-medium text-lg text-shadow">{title}</span>
+              <span className={`px-2 py-0.5 rounded-full ${statusColor} text-xs glassmorphism border border-white/20`}>{status}</span>
             </div>
-            <p className="text-neutral-600 text-sm mt-1">{details}</p>
+            <p className="text-neutral-600 text-sm mt-1 opacity-80">{details}</p>
           </div>
           <div className="flex items-center gap-2">
             <motion.button 
               onClick={() => setIsEditDialogOpen(true)}
-              className="p-2 rounded-full hover:bg-neutral-200 transition-colors"
-              whileHover={{ scale: 1.1 }}
+              className="p-2 rounded-full hover:bg-white/40 transition-colors button-glow"
+              whileHover={{ scale: 1.1, boxShadow: "0 4px 12px rgba(138, 43, 226, 0.15)" }}
               whileTap={{ scale: 0.9 }}
             >
-              <Pencil className="h-4 w-4 text-neutral-600" />
+              <Pencil className="h-4 w-4 text-purple-600" />
             </motion.button>
           </div>
         </div>
@@ -323,19 +323,25 @@ export default function EditableWorkout({
           <div className="mt-3 flex items-center gap-3">
             <motion.button 
               onClick={handleStartWorkout}
-              className="flex-1 py-2 rounded-lg bg-primary text-white hover:bg-primary/90 transition-colors"
-              whileHover={{ scale: 1.02 }}
+              className="flex-1 py-2 rounded-lg gradient-purple text-white transition-all shadow-md button-glow"
+              whileHover={{ scale: 1.02, boxShadow: "0 6px 15px rgba(138, 43, 226, 0.25)" }}
               whileTap={{ scale: 0.98 }}
             >
-              Start Workout
+              <span className="flex items-center justify-center gap-2">
+                <Clock className="h-4 w-4" />
+                Start Workout
+              </span>
             </motion.button>
             <motion.button 
               onClick={() => setIsRescheduleDialogOpen(true)}
-              className="px-3 py-2 rounded-lg border border-neutral-300 hover:bg-neutral-200 transition-colors"
-              whileHover={{ scale: 1.02 }}
+              className="px-3 py-2 rounded-lg glassmorphism border border-white/30 hover:bg-white/20 transition-colors button-glow"
+              whileHover={{ scale: 1.02, boxShadow: "0 4px 12px rgba(0, 0, 0, 0.05)" }}
               whileTap={{ scale: 0.98 }}
             >
-              Reschedule
+              <span className="flex items-center justify-center gap-2">
+                <Calendar className="h-4 w-4" />
+                Reschedule
+              </span>
             </motion.button>
           </div>
         )}
@@ -344,11 +350,14 @@ export default function EditableWorkout({
           <div className="mt-3 flex items-center gap-3">
             <motion.button 
               onClick={handleCompleteWorkout}
-              className="flex-1 py-2 rounded-lg bg-success text-white hover:bg-success/90 transition-colors"
-              whileHover={{ scale: 1.02 }}
+              className="flex-1 py-2 rounded-lg gradient-green text-white transition-all shadow-md button-glow"
+              whileHover={{ scale: 1.02, boxShadow: "0 6px 15px rgba(67, 160, 71, 0.25)" }}
               whileTap={{ scale: 0.98 }}
             >
-              Complete Workout
+              <span className="flex items-center justify-center gap-2">
+                <Check className="h-4 w-4" />
+                Complete Workout
+              </span>
             </motion.button>
           </div>
         )}
@@ -356,10 +365,10 @@ export default function EditableWorkout({
       
       {/* Edit Workout Dialog */}
       <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className="sm:max-w-[425px] glassmorphism border border-white/20 shadow-2xl">
           <DialogHeader>
-            <DialogTitle>{id ? "Edit Workout" : "Create New Workout"}</DialogTitle>
-            <DialogDescription>
+            <DialogTitle className="text-xl font-semibold text-purple-800 text-shadow">{id ? "Edit Workout" : "Create New Workout"}</DialogTitle>
+            <DialogDescription className="text-neutral-600">
               {id ? "Update the details of your workout" : "Add a new workout to your schedule"}
             </DialogDescription>
           </DialogHeader>
@@ -510,7 +519,7 @@ export default function EditableWorkout({
                   type="button" 
                   variant="destructive" 
                   onClick={handleDelete}
-                  className="flex items-center gap-1"
+                  className="flex items-center gap-1 button-glow shadow-md hover:shadow-lg transition-shadow"
                 >
                   <Trash className="h-4 w-4" />
                   <span>Delete</span>
@@ -522,7 +531,7 @@ export default function EditableWorkout({
                   type="button" 
                   variant="outline" 
                   onClick={() => setIsEditDialogOpen(false)}
-                  className="flex items-center gap-1"
+                  className="flex items-center gap-1 button-glow"
                 >
                   <X className="h-4 w-4" />
                   <span>Cancel</span>
@@ -530,7 +539,7 @@ export default function EditableWorkout({
                 
                 <Button 
                   type="submit" 
-                  className="flex items-center gap-1"
+                  className="flex items-center gap-1 gradient-purple border-0 text-white button-glow shadow-md hover:shadow-lg transition-shadow"
                 >
                   <Check className="h-4 w-4" />
                   <span>Save</span>
@@ -543,10 +552,10 @@ export default function EditableWorkout({
       
       {/* Reschedule Dialog */}
       <Dialog open={isRescheduleDialogOpen} onOpenChange={setIsRescheduleDialogOpen}>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className="sm:max-w-[425px] glassmorphism border border-white/20 shadow-2xl">
           <DialogHeader>
-            <DialogTitle>Reschedule Workout</DialogTitle>
-            <DialogDescription>
+            <DialogTitle className="text-xl font-semibold text-purple-800 text-shadow">Reschedule Workout</DialogTitle>
+            <DialogDescription className="text-neutral-600">
               Choose a new date and time for your workout.
             </DialogDescription>
           </DialogHeader>
@@ -574,18 +583,22 @@ export default function EditableWorkout({
               </div>
             </div>
             
-            <div className="flex justify-end gap-2">
+            <div className="flex justify-end gap-2 mt-6">
               <Button 
                 variant="outline" 
                 onClick={() => setIsRescheduleDialogOpen(false)}
+                className="button-glow flex items-center gap-1"
               >
-                Cancel
+                <X className="h-4 w-4" />
+                <span>Cancel</span>
               </Button>
               <Button 
                 onClick={handleReschedule}
                 disabled={!scheduleDate}
+                className="gradient-purple border-0 text-white button-glow flex items-center gap-1"
               >
-                Save Changes
+                <Calendar className="h-4 w-4" />
+                <span>Reschedule</span>
               </Button>
             </div>
           </div>

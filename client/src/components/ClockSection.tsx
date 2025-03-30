@@ -114,17 +114,18 @@ export default function ClockSection() {
   }, [timer]);
 
   return (
-    <Neumorphic className="p-6 flex flex-col items-center relative overflow-hidden">
+    <Neumorphic className="p-6 flex flex-col items-center relative overflow-hidden animate-fade-in">
       <div className="flex items-center justify-between w-full mb-6">
         <div className="flex items-center">
           <Timer className="h-5 w-5 text-purple-500 mr-2" />
-          <h2 className="text-xl font-heading font-semibold">Time Tracker</h2>
+          <h2 className="text-xl font-heading font-semibold text-shadow">Time Tracker</h2>
         </div>
       </div>
       
       {/* Decorative Elements */}
-      <div className="absolute top-0 right-0 w-28 h-28 bg-purple-500 rounded-full opacity-5 -mr-10 -mt-10"></div>
-      <div className="absolute bottom-0 left-0 w-20 h-20 bg-indigo-500 rounded-full opacity-5 -ml-8 -mb-8"></div>
+      <div className="absolute top-0 right-0 w-28 h-28 bg-purple-500 rounded-full opacity-5 -mr-10 -mt-10 animate-pulse-slow"></div>
+      <div className="absolute bottom-0 left-0 w-20 h-20 bg-indigo-500 rounded-full opacity-5 -ml-8 -mb-8 animate-pulse-slow"></div>
+      <div className="absolute top-1/4 left-1/4 w-12 h-12 bg-pink-400 rounded-full opacity-5 -ml-6"></div>
       
       <div className="relative z-10 flex flex-col items-center w-full">
         <div className="flex justify-center w-full">
@@ -132,14 +133,16 @@ export default function ClockSection() {
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.5 }}
-            className="mb-4 mx-auto text-center"
+            className="mb-4 mx-auto text-center relative"
           >
+            {/* Add a subtle glow effect behind the clock */}
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[90%] h-[90%] rounded-full bg-gradient-to-r from-purple-100 to-indigo-100 blur-xl opacity-50 -z-10"></div>
             <AnalogClock />
           </motion.div>
         </div>
         
         <motion.div 
-          className="text-2xl font-medium mb-1 text-center"
+          className="text-2xl font-medium mb-1 text-center text-shadow glassmorphism px-4 py-1 rounded-full"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3 }}
@@ -154,7 +157,7 @@ export default function ClockSection() {
           transition={{ delay: 0.4 }}
         >
           <Calendar className="h-3.5 w-3.5 mr-2 text-purple-400" />
-          <span>{dateString}</span>
+          <span className="bg-white bg-opacity-60 px-2 py-0.5 rounded-md">{dateString}</span>
         </motion.div>
         
         <motion.div 
@@ -164,25 +167,25 @@ export default function ClockSection() {
           transition={{ delay: 0.5, duration: 0.4 }}
         >
           <motion.div 
-            className="bg-purple-50 rounded-lg p-3 flex justify-between items-center cursor-pointer"
-            whileHover={{ scale: 1.02, boxShadow: "0 4px 6px -1px rgba(139, 92, 246, 0.1)" }}
+            className="glassmorphism rounded-lg p-3 flex justify-between items-center cursor-pointer card-hover"
+            whileHover={{ scale: 1.02, boxShadow: "0 4px 15px -1px rgba(138, 43, 226, 0.15)" }}
             onClick={toggleActivityTimer}
           >
             <div className="flex items-center">
-              <div className="bg-purple-100 rounded-full p-1.5 mr-3">
-                <Activity className={`h-4 w-4 ${isActivityRunning ? "text-green-600" : "text-purple-600"}`} />
+              <div className={`gradient-purple rounded-full p-1.5 mr-3 ${isActivityRunning ? 'animate-pulse-slow' : ''}`}>
+                <Activity className={`h-4 w-4 text-white`} />
               </div>
               <span className="text-sm font-medium text-purple-800">Active time today</span>
             </div>
             <div className="flex items-center gap-2">
               <motion.span 
                 className={`font-medium ${isActivityRunning ? "text-green-700" : "text-purple-700"} bg-white px-2 py-1 rounded-md shadow-sm`}
-                whileHover={{ y: -2, boxShadow: "0 4px 6px -1px rgba(139, 92, 246, 0.1)" }}
+                whileHover={{ y: -2, boxShadow: "0 4px 6px -1px rgba(138, 43, 226, 0.1)" }}
               >
                 {activeTime}
               </motion.span>
               <motion.button
-                className={`p-1.5 rounded-full ${isActivityRunning ? "bg-red-100" : "bg-green-100"}`}
+                className={`p-1.5 rounded-full ${isActivityRunning ? "bg-red-100 button-glow" : "bg-green-100 button-glow"}`}
                 whileHover={{ scale: 1.1 }}
                 onClick={toggleActivityTimer}
               >
@@ -192,7 +195,7 @@ export default function ClockSection() {
                 }
               </motion.button>
               <motion.button
-                className="p-1.5 rounded-full bg-gray-100"
+                className="p-1.5 rounded-full bg-gray-100 button-glow"
                 whileHover={{ scale: 1.1 }}
                 onClick={resetTimer}
               >
@@ -203,17 +206,17 @@ export default function ClockSection() {
           
           <Link href="/workouts" className="block no-underline">
             <motion.div 
-              className="bg-indigo-50 rounded-lg p-3 flex justify-between items-center cursor-pointer"
-              whileHover={{ scale: 1.02, boxShadow: "0 4px 6px -1px rgba(99, 102, 241, 0.1)" }}
+              className="glassmorphism gradient-blue bg-opacity-5 rounded-lg p-3 flex justify-between items-center cursor-pointer card-hover"
+              whileHover={{ scale: 1.02, boxShadow: "0 4px 15px -1px rgba(99, 102, 241, 0.15)" }}
             >
               <div className="flex items-center">
-                <div className="bg-indigo-100 rounded-full p-1.5 mr-3">
-                  <Dumbbell className="h-4 w-4 text-indigo-600" />
+                <div className="gradient-blue rounded-full p-1.5 mr-3">
+                  <Dumbbell className="h-4 w-4 text-white" />
                 </div>
                 <span className="text-sm font-medium text-indigo-800">Remaining workouts</span>
               </div>
               <motion.span 
-                className="font-medium text-indigo-700 bg-white px-2 py-1 rounded-md shadow-sm"
+                className="font-medium text-indigo-700 bg-white px-3 py-1 rounded-md shadow-sm"
                 whileHover={{ y: -2, boxShadow: "0 4px 6px -1px rgba(99, 102, 241, 0.1)" }}
               >
                 {remainingWorkouts}
