@@ -15,6 +15,12 @@ import {
 } from "@/components/ui/decorative-elements";
 import { Calendar, BarChart3, History, Dumbbell, Award } from "lucide-react";
 import fitnessIllustration from "@/assets/images/fitness-illustration.svg";
+// Import workout images
+import runningImg from "@/assets/images/workouts/running.svg";
+import weightliftingImg from "@/assets/images/workouts/weightlifting.svg";
+import yogaImg from "@/assets/images/workouts/yoga.svg";
+import cyclingImg from "@/assets/images/workouts/cycling.svg";
+import swimmingImg from "@/assets/images/workouts/swimming.svg";
 
 export default function WorkoutsPage() {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
@@ -126,31 +132,43 @@ export default function WorkoutsPage() {
                 
                 <div className="flex flex-col md:flex-row items-center justify-center gap-6 py-10 text-center">
                   <motion.div 
-                    className="flex flex-col items-center p-6 rounded-xl bg-indigo-50 shadow-sm w-full md:w-1/3"
+                    className="flex flex-col items-center p-6 rounded-xl bg-indigo-50 shadow-sm w-full md:w-1/3 relative overflow-hidden"
                     whileHover={{ y: -5, boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1)" }}
                   >
-                    <Dumbbell className="h-10 w-10 text-indigo-500 mb-4" />
-                    <p className="text-neutral-700">
+                    <img 
+                      src={weightliftingImg} 
+                      alt="Weightlifting" 
+                      className="h-36 mb-4" 
+                    />
+                    <p className="text-neutral-700 font-medium">
                       View your weekly workout schedule
                     </p>
                   </motion.div>
                   
                   <motion.div 
-                    className="flex flex-col items-center p-6 rounded-xl bg-purple-50 shadow-sm w-full md:w-1/3"
+                    className="flex flex-col items-center p-6 rounded-xl bg-purple-50 shadow-sm w-full md:w-1/3 relative overflow-hidden"
                     whileHover={{ y: -5, boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1)" }}
                   >
-                    <Award className="h-10 w-10 text-purple-500 mb-4" />
-                    <p className="text-neutral-700">
+                    <img 
+                      src={runningImg} 
+                      alt="Running" 
+                      className="h-36 mb-4" 
+                    />
+                    <p className="text-neutral-700 font-medium">
                       Track your workout achievements
                     </p>
                   </motion.div>
                   
                   <motion.div 
-                    className="flex flex-col items-center p-6 rounded-xl bg-pink-50 shadow-sm w-full md:w-1/3"
+                    className="flex flex-col items-center p-6 rounded-xl bg-pink-50 shadow-sm w-full md:w-1/3 relative overflow-hidden"
                     whileHover={{ y: -5, boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1)" }}
                   >
-                    <BarChart3 className="h-10 w-10 text-pink-500 mb-4" />
-                    <p className="text-neutral-700">
+                    <img 
+                      src={yogaImg} 
+                      alt="Yoga" 
+                      className="h-36 mb-4" 
+                    />
+                    <p className="text-neutral-700 font-medium">
                       Analyze your exercise trends
                     </p>
                   </motion.div>
@@ -182,18 +200,49 @@ export default function WorkoutsPage() {
                   </h2>
                 </div>
                 
-                <div className="flex justify-center py-8">
-                  <div className="relative">
-                    <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-lg blur opacity-20"></div>
+                <div className="py-8">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <motion.div 
-                      className="relative bg-white rounded-lg p-8 shadow-sm text-center"
+                      className="relative bg-white rounded-lg p-4 shadow-sm flex flex-col items-center"
                       whileHover={{ scale: 1.02 }}
                       transition={{ type: "spring", stiffness: 400, damping: 10 }}
                     >
-                      <p className="text-neutral-700 max-w-lg">
-                        Track your complete workout history, including duration, intensity, and progress over time. Detailed statistics and history will be available soon!
-                      </p>
+                      <img 
+                        src={cyclingImg} 
+                        alt="Cycling Workout" 
+                        className="h-48 mb-4" 
+                      />
+                      <div className="text-center">
+                        <h3 className="font-medium text-lg mb-2">Cycling Sessions</h3>
+                        <p className="text-neutral-600 text-sm">
+                          View your cycling workout history, performance metrics, and routes
+                        </p>
+                      </div>
                     </motion.div>
+                    
+                    <motion.div 
+                      className="relative bg-white rounded-lg p-4 shadow-sm flex flex-col items-center"
+                      whileHover={{ scale: 1.02 }}
+                      transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                    >
+                      <img 
+                        src={swimmingImg} 
+                        alt="Swimming Workout" 
+                        className="h-48 mb-4" 
+                      />
+                      <div className="text-center">
+                        <h3 className="font-medium text-lg mb-2">Swimming Training</h3>
+                        <p className="text-neutral-600 text-sm">
+                          Track your swimming workouts, lap times, and technique improvements
+                        </p>
+                      </div>
+                    </motion.div>
+                  </div>
+                  
+                  <div className="mt-6 text-center">
+                    <p className="text-neutral-700 max-w-lg mx-auto">
+                      Track your complete workout history, including duration, intensity, and progress over time. Detailed statistics and history will be available soon!
+                    </p>
                   </div>
                 </div>
               </Neumorphic>
