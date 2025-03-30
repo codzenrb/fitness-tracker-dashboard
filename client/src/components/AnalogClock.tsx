@@ -66,35 +66,64 @@ export default function AnalogClock() {
         ))}
         
         {/* Clock hands */}
-        <motion.div 
-          className="absolute w-[4px] h-[32px] bg-gradient-to-b from-purple-900 to-purple-700 rounded-full left-1/2 top-[25px] origin-bottom 
-            shadow-[0_1px_3px_rgba(0,0,0,0.2)] after:content-[''] after:absolute after:w-[10px] after:h-[10px] after:rounded-full 
-            after:bg-purple-200 after:top-0 after:left-1/2 after:transform after:-translate-x-1/2 after:-translate-y-1/2 after:opacity-50"
-          style={{ translateX: "-50%" }}
-          animate={{ rotate: hourDeg }}
-          transition={{ type: "tween", ease: "anticipate" }}
-        />
+        <div className="absolute inset-0 flex items-center justify-center">
+          <motion.div 
+            className="absolute w-[4px] h-[32px] bg-gradient-to-b from-purple-900 to-purple-700 rounded-full origin-bottom 
+              shadow-[0_1px_3px_rgba(0,0,0,0.2)]"
+            style={{ 
+              bottom: "50%", 
+              left: "50%", 
+              marginLeft: "-2px"
+            }}
+            animate={{ rotate: hourDeg }}
+            transition={{ type: "tween", ease: "anticipate" }}
+          >
+            {/* Hour hand tip */}
+            <div className="absolute w-[6px] h-[6px] bg-purple-800 rounded-full top-[2px] left-1/2 transform -translate-x-1/2 -translate-y-1/2"></div>
+          </motion.div>
+        </div>
         
-        <motion.div 
-          className="absolute w-[3px] h-[42px] bg-gradient-to-b from-indigo-800 to-indigo-600 rounded-full left-1/2 top-[15px] origin-bottom 
-            shadow-[0_1px_3px_rgba(0,0,0,0.15)] after:content-[''] after:absolute after:w-[8px] after:h-[8px] after:rounded-full 
-            after:bg-indigo-200 after:top-0 after:left-1/2 after:transform after:-translate-x-1/2 after:-translate-y-1/2 after:opacity-50"
-          style={{ translateX: "-50%" }}
-          animate={{ rotate: minuteDeg }}
-          transition={{ type: "tween", ease: "anticipate" }}
-        />
+        <div className="absolute inset-0 flex items-center justify-center">
+          <motion.div 
+            className="absolute w-[3px] h-[42px] bg-gradient-to-b from-indigo-800 to-indigo-600 rounded-full origin-bottom 
+              shadow-[0_1px_3px_rgba(0,0,0,0.15)]"
+            style={{ 
+              bottom: "50%", 
+              left: "50%", 
+              marginLeft: "-1.5px"
+            }}
+            animate={{ rotate: minuteDeg }}
+            transition={{ type: "tween", ease: "anticipate" }}
+          >
+            {/* Minute hand tip */}
+            <div className="absolute w-[5px] h-[5px] bg-indigo-700 rounded-full top-[2px] left-1/2 transform -translate-x-1/2 -translate-y-1/2"></div>
+          </motion.div>
+        </div>
         
-        <motion.div 
-          className="absolute w-[2px] h-[48px] bg-gradient-to-b from-red-500 to-red-600 rounded-full left-1/2 top-[12px] origin-bottom shadow-sm"
-          style={{ translateX: "-50%" }}
-          animate={{ rotate: secondDeg }}
-          transition={{ type: "tween", ease: "linear" }}
-        />
+        <div className="absolute inset-0 flex items-center justify-center">
+          <motion.div 
+            className="absolute w-[2px] h-[48px] bg-gradient-to-b from-red-500 to-red-600 rounded-full origin-bottom shadow-sm"
+            style={{ 
+              bottom: "50%", 
+              left: "50%", 
+              marginLeft: "-1px"
+            }}
+            animate={{ rotate: secondDeg }}
+            transition={{ type: "tween", ease: "linear" }}
+          >
+            {/* Second hand tail */}
+            <div className="absolute w-[5px] h-[5px] bg-red-500 rounded-full bottom-[-5px] left-1/2 transform -translate-x-1/2"></div>
+          </motion.div>
+        </div>
         
         {/* Center dot with glow effect */}
-        <div className="absolute w-[12px] h-[12px] bg-gradient-to-br from-gray-700 to-gray-900 rounded-full top-1/2 left-1/2 transform 
-          -translate-x-1/2 -translate-y-1/2 shadow-sm z-10 before:content-[''] before:absolute before:inset-[-3px] 
-          before:rounded-full before:bg-white before:opacity-20 before:blur-[2px]"></div>
+        <div className="absolute w-[14px] h-[14px] bg-gradient-to-br from-gray-700 to-gray-900 rounded-full top-1/2 left-1/2 transform 
+          -translate-x-1/2 -translate-y-1/2 shadow-sm z-10">
+          {/* Inner highlight for the center dot */}
+          <div className="absolute w-[6px] h-[6px] rounded-full bg-white opacity-25 top-[2px] left-[2px]"></div>
+          {/* Outer glow */}
+          <div className="absolute inset-[-3px] rounded-full bg-white opacity-15 blur-[2px]"></div>
+        </div>
         
         {/* Inner decorative circles for depth */}
         <div className="absolute inset-[15px] rounded-full bg-transparent border border-gray-100 opacity-30"></div>

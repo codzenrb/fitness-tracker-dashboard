@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 @layer utilities {
-  .bg-300% {
+  .bg-300-percent {
     background-size: 300% 300%;
   }
   
