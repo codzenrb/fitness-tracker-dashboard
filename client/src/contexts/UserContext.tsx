@@ -9,6 +9,7 @@ export interface UserData {
   weight: number;
   goal: string;
   isLoggedIn: boolean;
+  otpVerified: boolean;
 }
 
 // Initial user state
@@ -18,7 +19,8 @@ const initialUserState: UserData = {
   height: 0,
   weight: 0,
   goal: '',
-  isLoggedIn: false
+  isLoggedIn: false,
+  otpVerified: false
 };
 
 // Context type
@@ -68,7 +70,8 @@ export function UserProvider({ children }: UserProviderProps) {
   const login = (userData: Omit<UserData, 'isLoggedIn'>) => {
     setUser({
       ...userData,
-      isLoggedIn: true
+      isLoggedIn: true,
+      otpVerified: userData.otpVerified || false
     });
   };
 

@@ -12,7 +12,13 @@ export interface IStorage {
   // User operations
   getUser(id: number): Promise<User | undefined>;
   getUserByUsername(username: string): Promise<User | undefined>;
+  getUserByMobileNumber(mobileNumber: string): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
+  updateUser(id: number, user: Partial<User>): Promise<User | undefined>;
+  
+  // OTP operations
+  generateOTP(userId: number): Promise<string>;
+  verifyOTP(userId: number, otp: string): Promise<boolean>;
   
   // Goal operations
   getGoals(userId: number): Promise<Goal[]>;
@@ -103,7 +109,13 @@ export class MemStorage implements IStorage {
       username: "johnsmith",
       password: "password123",
       name: "John Smith",
-      email: "john@example.com"
+      email: "john@example.com",
+      mobileNumber: "+1234567890",
+      height: 175,
+      weight: 70,
+      goal: "Lose weight and build muscle",
+      otpSecret: null,
+      otpVerified: false
     });
   }
 
@@ -118,11 +130,61 @@ export class MemStorage implements IStorage {
     );
   }
 
+  async getUserByMobileNumber(mobileNumber: string): Promise<User | undefined> {
+    return Array.from(this.users.values()).find(
+      (user) => user.mobileNumber === mobileNumber,
+    );
+  }
+
   async createUser(insertUser: InsertUser): Promise<User> {
     const id = this.userIdCounter++;
     const user: User = { ...insertUser, id };
     this.users.set(id, user);
     return user;
+  }
+
+  async updateUser(id: number, updatedUser: Partial<User>): Promise<User | undefined> {
+    const user = this.users.get(id);
+    if (!user) return undefined;
+    
+    const updated = { ...user, ...updatedUser };
+    this.users.set(id, updated);
+    return updated;
+  }
+  
+  async generateOTP(userId: number): Promise<string> {
+    const user = this.users.get(userId);
+    if (!user) throw new Error("User not found");
+    
+    // Generate a random 6-digit OTP
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    
+    // In a real application, we would use a proper hashing/encryption library
+    // For now, we'll store it directly (not secure for production)
+    const updated = { ...user, otpSecret: otp };
+    this.users.set(userId, updated);
+    
+    return otp;
+  }
+  
+  async verifyOTP(userId: number, otp: string): Promise<boolean> {
+    const user = this.users.get(userId);
+    if (!user || !user.otpSecret) return false;
+    
+    // Check if OTP matches
+    const isValid = user.otpSecret === otp;
+    
+    if (isValid) {
+      // Mark as verified and clear the OTP secret
+      const updated = { 
+        ...user, 
+        otpVerified: true,
+        otpSecret: null 
+      };
+      this.users.set(userId, updated);
+    }
+    
+    return isValid;
   }
   
   // Goal operations

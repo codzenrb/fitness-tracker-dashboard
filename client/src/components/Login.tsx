@@ -18,6 +18,9 @@ import {
   CyclingIcon,
   FitnessBackground
 } from "@/assets/workout-icons";
+import OTPVerification from "./OtpVerification";
+import { apiRequest } from "@/lib/queryClient";
+import { toast } from "@/hooks/use-toast";
 
 // Login schema validation
 const loginSchema = z.object({
@@ -33,11 +36,13 @@ type LoginFormValues = z.infer<typeof loginSchema>;
 
 // Login props
 export type LoginProps = {
-  onLogin: (userData: LoginFormValues) => void;
+  onLogin: (userData: LoginFormValues & { otpVerified: boolean }) => void;
 };
 
 export default function Login({ onLogin }: LoginProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showOTPVerification, setShowOTPVerification] = useState(false);
+  const [userData, setUserData] = useState<LoginFormValues | null>(null);
 
   // Form definition
   const form = useForm<LoginFormValues>({
@@ -52,13 +57,89 @@ export default function Login({ onLogin }: LoginProps) {
   });
 
   // Handle form submission
-  const onSubmit = (data: LoginFormValues) => {
+  const onSubmit = async (data: LoginFormValues) => {
     setIsSubmitting(true);
-    // Simulate API call
-    setTimeout(() => {
-      onLogin(data);
+    
+    try {
+      // Register user and send initial OTP
+      const response = await apiRequest<{ success: boolean; message: string; otp?: string; otpSent?: boolean }>('/api/register', {
+        method: 'POST',
+        body: {
+          ...data,
+          email: `${data.mobileNumber.replace(/\D/g, '')}@example.com`, // Generate an email for demo purposes
+        }
+      });
+      
+      if (response.success) {
+        // Store user data for later use
+        setUserData(data);
+        // Show OTP verification screen
+        setShowOTPVerification(true);
+        
+        // Show success message
+        toast({
+          title: "Registration Successful",
+          description: "Please verify your mobile number with the OTP sent to you",
+        });
+        
+        // For demo purposes, show the OTP
+        if (response.otp) {
+          toast({
+            title: "For Demo Purposes Only",
+            description: `Your OTP is: ${response.otp}`,
+            variant: "default",
+          });
+        }
+      } else {
+        toast({
+          title: "Registration Failed",
+          description: response.message || "Could not register user",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.error("Registration error:", error);
+      toast({
+        title: "Registration Error",
+        description: "An error occurred during registration. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
       setIsSubmitting(false);
-    }, 1000);
+    }
+  };
+  
+  // Handle OTP verification success
+  const handleVerificationSuccess = () => {
+    if (userData) {
+      // Proceed with the login process with verified status
+      onLogin({
+        ...userData,
+        otpVerified: true
+      });
+    }
+  };
+  
+  // Handle OTP resend
+  const handleResendOTP = async () => {
+    if (!userData?.mobileNumber) return;
+    
+    const response = await apiRequest<{ success: boolean; message: string; otp?: string }>('/api/send-otp', {
+      method: 'POST',
+      body: {
+        mobileNumber: userData.mobileNumber
+      }
+    });
+    
+    // For demo purposes, show the new OTP
+    if (response.success && response.otp) {
+      toast({
+        title: "For Demo Purposes Only",
+        description: `Your new OTP is: ${response.otp}`,
+      });
+    }
+    
+    return Promise.resolve();
   };
 
   // Animation variants
@@ -163,7 +244,7 @@ export default function Login({ onLogin }: LoginProps) {
         <FitnessBackground width="100%" height={200} />
       </div>
       
-      {/* Login form */}
+      {/* Login form or OTP verification */}
       <div className="min-h-screen w-full flex items-center justify-center p-4 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -188,61 +269,39 @@ export default function Login({ onLogin }: LoginProps) {
                   FitTrack
                 </CardTitle>
                 <CardDescription className="text-gray-700 font-medium">
-                  Your personal fitness journey starts here
+                  {showOTPVerification 
+                    ? "Please verify your mobile number" 
+                    : "Your personal fitness journey starts here"}
                 </CardDescription>
               </CardHeader>
               
               <CardContent>
-                <Form {...form}>
-                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                    <FormField
-                      control={form.control}
-                      name="name"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="text-gray-800">Name</FormLabel>
-                          <FormControl>
-                            <Input 
-                              placeholder="John Doe" 
-                              {...field} 
-                              className="border-indigo-200 focus:border-indigo-400 bg-white/70" 
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
+                {showOTPVerification && userData ? (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    <OTPVerification 
+                      mobileNumber={userData.mobileNumber}
+                      onVerificationSuccess={handleVerificationSuccess}
+                      onResendOTP={handleResendOTP}
                     />
-                    
-                    <FormField
-                      control={form.control}
-                      name="mobileNumber"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="text-gray-800">Mobile Number</FormLabel>
-                          <FormControl>
-                            <Input 
-                              placeholder="+1 234 567 8900" 
-                              {...field} 
-                              className="border-indigo-200 focus:border-indigo-400 bg-white/70" 
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    
-                    <div className="grid grid-cols-2 gap-4">
+                  </motion.div>
+                ) : (
+                  <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                       <FormField
                         control={form.control}
-                        name="height"
+                        name="name"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel className="text-gray-800">Height (cm)</FormLabel>
+                            <FormLabel className="text-gray-800">Name</FormLabel>
                             <FormControl>
                               <Input 
-                                type="number" 
+                                placeholder="John Doe" 
                                 {...field} 
-                                className="border-indigo-200 focus:border-indigo-400 bg-white/70"
+                                className="border-indigo-200 focus:border-indigo-400 bg-white/70" 
                               />
                             </FormControl>
                             <FormMessage />
@@ -252,61 +311,101 @@ export default function Login({ onLogin }: LoginProps) {
                       
                       <FormField
                         control={form.control}
-                        name="weight"
+                        name="mobileNumber"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel className="text-gray-800">Weight (kg)</FormLabel>
+                            <FormLabel className="text-gray-800">Mobile Number</FormLabel>
                             <FormControl>
                               <Input 
-                                type="number" 
+                                placeholder="+1 234 567 8900" 
                                 {...field} 
-                                className="border-indigo-200 focus:border-indigo-400 bg-white/70"
+                                className="border-indigo-200 focus:border-indigo-400 bg-white/70" 
                               />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
                         )}
                       />
-                    </div>
-                    
-                    <FormField
-                      control={form.control}
-                      name="goal"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="text-gray-800">Fitness Goal</FormLabel>
-                          <FormControl>
-                            <Textarea 
-                              placeholder="e.g., Lose 5kg in 3 months, run a 5K, build muscle..."
-                              {...field}
-                              className="resize-none border-indigo-200 focus:border-indigo-400 bg-white/70"
-                              rows={3}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    
-                    <motion.div
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                    >
-                      <Button 
-                        type="submit" 
-                        className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white"
-                        disabled={isSubmitting}
+                      
+                      <div className="grid grid-cols-2 gap-4">
+                        <FormField
+                          control={form.control}
+                          name="height"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-gray-800">Height (cm)</FormLabel>
+                              <FormControl>
+                                <Input 
+                                  type="number" 
+                                  {...field} 
+                                  className="border-indigo-200 focus:border-indigo-400 bg-white/70"
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        
+                        <FormField
+                          control={form.control}
+                          name="weight"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-gray-800">Weight (kg)</FormLabel>
+                              <FormControl>
+                                <Input 
+                                  type="number" 
+                                  {...field} 
+                                  className="border-indigo-200 focus:border-indigo-400 bg-white/70"
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                      
+                      <FormField
+                        control={form.control}
+                        name="goal"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-gray-800">Fitness Goal</FormLabel>
+                            <FormControl>
+                              <Textarea 
+                                placeholder="e.g., Lose 5kg in 3 months, run a 5K, build muscle..."
+                                {...field}
+                                className="resize-none border-indigo-200 focus:border-indigo-400 bg-white/70"
+                                rows={3}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <motion.div
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
                       >
-                        {isSubmitting ? "Starting Your Journey..." : "Begin Fitness Journey"}
-                      </Button>
-                    </motion.div>
-                  </form>
-                </Form>
+                        <Button 
+                          type="submit" 
+                          className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white"
+                          disabled={isSubmitting}
+                        >
+                          {isSubmitting ? "Starting Your Journey..." : "Begin Fitness Journey"}
+                        </Button>
+                      </motion.div>
+                    </form>
+                  </Form>
+                )}
               </CardContent>
               
               <CardFooter className="flex justify-center pb-1 pt-0">
                 <div className="text-xs text-gray-600">
-                  Unlock your fitness potential with personalized tracking
+                  {showOTPVerification 
+                    ? "Verification is required for account security" 
+                    : "Unlock your fitness potential with personalized tracking"}
                 </div>
               </CardFooter>
             </Card>

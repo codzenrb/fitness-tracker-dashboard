@@ -9,6 +9,12 @@ export const users = pgTable("users", {
   password: text("password").notNull(),
   name: text("name").notNull(),
   email: text("email").notNull(),
+  mobileNumber: text("mobile_number").notNull(),
+  height: integer("height"),
+  weight: integer("weight"),
+  goal: text("goal"),
+  otpSecret: text("otp_secret").default(null),
+  otpVerified: boolean("otp_verified").default(false),
 });
 
 // Goal schema

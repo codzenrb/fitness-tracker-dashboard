@@ -11,8 +11,18 @@ function AppRouter() {
   const { user, login } = useUser();
 
   // Handle login submission
-  const handleLogin = (userData: Omit<UserData, 'isLoggedIn'>) => {
-    login(userData);
+  const handleLogin = (userData: {
+    name: string; 
+    mobileNumber: string; 
+    height: number; 
+    weight: number; 
+    goal: string;
+    otpVerified?: boolean;
+  }) => {
+    login({
+      ...userData,
+      otpVerified: userData.otpVerified || false
+    });
   };
 
   return (

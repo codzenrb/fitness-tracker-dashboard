@@ -1,7 +1,8 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertGoalSchema, insertWorkoutSchema, insertNutritionLogSchema, insertActivityLogSchema, insertStatsSchema } from "@shared/schema";
+import { insertGoalSchema, insertWorkoutSchema, insertNutritionLogSchema, insertActivityLogSchema, insertStatsSchema, insertUserSchema } from "@shared/schema";
+import { authenticator } from "otplib";
 import { ZodError } from "zod";
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -314,6 +315,141 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (err) {
       console.error(err);
       res.status(500).json({ message: "Failed to fetch tips" });
+    }
+  });
+  
+  // User and OTP routes
+  app.post("/api/register", async (req, res) => {
+    try {
+      // Check if user already exists
+      const existingUser = await storage.getUserByMobileNumber(req.body.mobileNumber);
+      if (existingUser) {
+        return res.status(400).json({ 
+          success: false,
+          message: "A user with this mobile number already exists" 
+        });
+      }
+      
+      // Create the user
+      const userData = {
+        ...req.body,
+        username: `user_${Date.now()}`, // Generate a username
+        password: `pass_${Math.random().toString(36).slice(-8)}`, // Generate a random password
+        otpVerified: false,
+      };
+      
+      const user = await storage.createUser(userData);
+      
+      // Generate and send OTP
+      const otp = await storage.generateOTP(user.id);
+      
+      // In a real app, we would send the OTP via SMS here
+      // For demo purposes, we'll just include it in the response
+      
+      res.status(201).json({ 
+        success: true,
+        message: "User registered. Please verify your mobile number.",
+        otpSent: true,
+        otp // Only for demo purposes - in production, this should never be returned!
+      });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ 
+        success: false,
+        message: "Failed to register user" 
+      });
+    }
+  });
+  
+  app.post("/api/send-otp", async (req, res) => {
+    try {
+      const { mobileNumber } = req.body;
+      
+      if (!mobileNumber) {
+        return res.status(400).json({ 
+          success: false, 
+          message: "Mobile number is required" 
+        });
+      }
+      
+      // Find user by mobile number
+      const user = await storage.getUserByMobileNumber(mobileNumber);
+      if (!user) {
+        return res.status(404).json({ 
+          success: false, 
+          message: "User not found" 
+        });
+      }
+      
+      // Generate and store new OTP
+      const otp = await storage.generateOTP(user.id);
+      
+      // In a real app, we would send the OTP via SMS here
+      // For demo purposes, we'll just include it in the response
+      
+      res.json({ 
+        success: true, 
+        message: "OTP sent successfully",
+        otp // Only for demo purposes
+      });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ 
+        success: false, 
+        message: "Failed to send OTP" 
+      });
+    }
+  });
+  
+  app.post("/api/verify-otp", async (req, res) => {
+    try {
+      const { mobileNumber, otp } = req.body;
+      
+      if (!mobileNumber || !otp) {
+        return res.status(400).json({ 
+          success: false, 
+          message: "Mobile number and OTP are required" 
+        });
+      }
+      
+      // Find user by mobile number
+      const user = await storage.getUserByMobileNumber(mobileNumber);
+      if (!user) {
+        return res.status(404).json({ 
+          success: false, 
+          message: "User not found" 
+        });
+      }
+      
+      // Verify OTP
+      const isValid = await storage.verifyOTP(user.id, otp);
+      
+      if (isValid) {
+        res.json({ 
+          success: true, 
+          message: "Mobile number verified successfully",
+          user: {
+            id: user.id,
+            name: user.name,
+            mobileNumber: user.mobileNumber,
+            height: user.height,
+            weight: user.weight,
+            goal: user.goal,
+            otpVerified: true
+          }
+        });
+      } else {
+        res.status(400).json({ 
+          success: false, 
+          message: "Invalid OTP" 
+        });
+      }
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ 
+        success: false, 
+        message: "Failed to verify OTP" 
+      });
     }
   });
 
