@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Neumorphic } from "./ui/neumorphic";
-import { Plus, Loader2 } from "lucide-react";
+import { Plus, Loader2, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog";
-import { format, parseISO, isToday } from "date-fns";
+import { format, parseISO, isToday, isSameDay } from "date-fns";
 import { apiRequest } from "@/lib/queryClient";
 import { toast } from "@/hooks/use-toast";
 import EditableWorkout, { WorkoutItemProps } from "./EditableWorkout";
@@ -22,11 +22,16 @@ interface WorkoutData {
   userId: number;
 }
 
-export default function WorkoutSection() {
+interface WorkoutSectionProps {
+  selectedDate?: Date;
+}
+
+export default function WorkoutSection({ selectedDate = new Date() }: WorkoutSectionProps) {
   const [workouts, setWorkouts] = useState<WorkoutItemProps[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [filteredWorkouts, setFilteredWorkouts] = useState<WorkoutItemProps[]>([]);
 
   const fetchWorkouts = async () => {
     setIsRefreshing(true);
@@ -62,7 +67,7 @@ export default function WorkoutSection() {
             detailsStr += ` · ${workout.caloriesBurned} calories`;
           }
           
-          detailsStr += ` · ${isToday(scheduledForDate) ? format(scheduledForDate, "h:mm a") : format(scheduledForDate, "MMM d")}`;
+          detailsStr += ` · ${isToday(scheduledForDate) ? format(scheduledForDate, "h:mm a") : format(scheduledForDate, "MMM d, h:mm a")}`;
           
           return {
             id: workout.id,
@@ -96,6 +101,9 @@ export default function WorkoutSection() {
         });
         
         setWorkouts(formattedWorkouts);
+        
+        // Filter workouts for the selected date
+        filterWorkoutsForSelectedDate(formattedWorkouts);
       }
     } catch (error) {
       console.error("Failed to fetch workouts:", error);
@@ -110,10 +118,20 @@ export default function WorkoutSection() {
     }
   };
 
-  // Load workouts on component mount
+  // Filter workouts for selected date
+  const filterWorkoutsForSelectedDate = (workoutsList: WorkoutItemProps[]) => {
+    const filtered = workoutsList.filter(workout => {
+      const workoutDate = new Date(workout.scheduledFor);
+      return isSameDay(workoutDate, selectedDate);
+    });
+    
+    setFilteredWorkouts(filtered);
+  };
+
+  // Load workouts on component mount or when selected date changes
   useEffect(() => {
     fetchWorkouts();
-  }, []);
+  }, [selectedDate.toISOString().split('T')[0]]); // Use the date part only to avoid extra renders
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -134,26 +152,32 @@ export default function WorkoutSection() {
     }
   };
 
-  // Empty workout for the create form - set for today
-  const today = new Date();
-  today.setHours(today.getHours() + 1, 0, 0, 0); // Set to the next hour
-  
-  const emptyWorkout: WorkoutItemProps = {
-    title: "",
-    description: "",
-    status: "Scheduled",
-    statusColor: "bg-blue-100 text-primary",
-    details: "",
-    duration: 30,
-    caloriesBurned: 0,
-    scheduledFor: today,
-    buttons: false
+  // Empty workout for the create form - set for selected date
+  const getEmptyWorkout = () => {
+    const scheduleDate = new Date(selectedDate);
+    scheduleDate.setHours(new Date().getHours() + 1, 0, 0, 0); // Schedule for next hour
+    
+    return {
+      title: "",
+      description: "",
+      status: "Scheduled",
+      statusColor: "bg-blue-100 text-primary",
+      details: "",
+      duration: 30,
+      caloriesBurned: 0,
+      scheduledFor: scheduleDate,
+      buttons: false
+    };
   };
+
+  const isSelectedToday = isToday(selectedDate);
 
   return (
     <Neumorphic className="p-6">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-xl font-heading font-semibold">Today's Workout</h2>
+        <h2 className="text-xl font-heading font-semibold">
+          {isSelectedToday ? "Today's Workout" : `Workout for ${format(selectedDate, "MMMM d, yyyy")}`}
+        </h2>
         
         <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
           <DialogTrigger asChild>
@@ -170,10 +194,10 @@ export default function WorkoutSection() {
             <DialogHeader>
               <DialogTitle>Create New Workout</DialogTitle>
               <DialogDescription>
-                Add a new workout to your schedule
+                Add a workout for {format(selectedDate, "MMMM d, yyyy")}
               </DialogDescription>
             </DialogHeader>
-            <EditableWorkout {...emptyWorkout} onUpdate={() => {
+            <EditableWorkout {...getEmptyWorkout()} onUpdate={() => {
               fetchWorkouts();
               setIsAddDialogOpen(false);
             }} />
@@ -187,12 +211,14 @@ export default function WorkoutSection() {
         </div>
       ) : (
         <>
-          {workouts.length === 0 ? (
+          {filteredWorkouts.length === 0 ? (
             <div className="text-center py-8">
-              <p className="text-neutral-500 mb-4">You don't have any workouts scheduled.</p>
+              <p className="text-neutral-500 mb-4">
+                No workouts scheduled for {format(selectedDate, "MMMM d, yyyy")}
+              </p>
               <Button onClick={() => setIsAddDialogOpen(true)}>
                 <Plus className="h-4 w-4 mr-2" />
-                Schedule Your First Workout
+                Schedule a Workout
               </Button>
             </div>
           ) : (
@@ -202,7 +228,7 @@ export default function WorkoutSection() {
               initial="hidden"
               animate="visible"
             >
-              {workouts.map((workout, index) => (
+              {filteredWorkouts.map((workout, index) => (
                 <motion.div 
                   key={workout.id || index}
                   variants={itemVariants}

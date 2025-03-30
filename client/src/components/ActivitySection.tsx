@@ -34,18 +34,29 @@ interface ActivityData {
   userId: number;
 }
 
-export default function ActivitySection() {
-  const [selectedDate, setSelectedDate] = useState(new Date());
+interface ActivitySectionProps {
+  selectedDate?: Date;
+}
+
+export default function ActivitySection({ selectedDate: externalSelectedDate }: ActivitySectionProps) {
+  const [selectedDate, setSelectedDate] = useState<Date>(externalSelectedDate || new Date());
   const [weekDays, setWeekDays] = useState<Array<{date: Date, abbr: string, day: number}>>([]);
   const [activities, setActivities] = useState<ActivityItemProps[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   
+  // Update selected date when external date changes
+  useEffect(() => {
+    if (externalSelectedDate) {
+      setSelectedDate(externalSelectedDate);
+    }
+  }, [externalSelectedDate]);
+  
   // Generate week days
   useEffect(() => {
-    const today = new Date();
-    const start = subDays(today, 3); // Start 3 days before today
+    const currentDate = selectedDate || new Date();
+    const start = subDays(currentDate, 3); // Start 3 days before selected date
     
     const days = Array.from({ length: 7 }, (_, i) => {
       const date = addDays(start, i);
@@ -58,12 +69,14 @@ export default function ActivitySection() {
     
     setWeekDays(days);
     
-    // Set default selected day to today
-    const todayIndex = days.findIndex(day => isToday(day.date));
-    if (todayIndex >= 0) {
-      setSelectedDate(days[todayIndex].date);
+    // If no external selected date, default to today
+    if (!externalSelectedDate) {
+      const todayIndex = days.findIndex(day => isToday(day.date));
+      if (todayIndex >= 0 && !isToday(selectedDate)) {
+        setSelectedDate(days[todayIndex].date);
+      }
     }
-  }, []);
+  }, [externalSelectedDate]); // Only regenerate when external date changes
   
   const fetchActivities = async () => {
     if (!selectedDate) return;
@@ -245,10 +258,16 @@ export default function ActivitySection() {
     };
   };
 
+  // Only show week day picker if this is not controlled by external date
+  const showWeekDayPicker = !externalSelectedDate;
+  const isSelectedToday = isToday(selectedDate);
+
   return (
     <Neumorphic className="p-6">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-xl font-heading font-semibold">Activity Log</h2>
+        <h2 className="text-xl font-heading font-semibold">
+          {isSelectedToday ? "Today's Activity" : `Activity Log for ${format(selectedDate, "MMMM d, yyyy")}`}
+        </h2>
         
         <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
           <DialogTrigger asChild>
@@ -279,40 +298,42 @@ export default function ActivitySection() {
         </Dialog>
       </div>
       
-      <div className="overflow-x-auto">
-        <div className="flex min-w-max space-x-3 mb-6">
-          {weekDays.map((day, index) => (
-            <motion.button 
-              key={index}
-              className={`min-w-[60px] py-3 px-2 flex flex-col items-center border-2 ${
-                isSameDay(selectedDate, day.date) 
-                  ? 'border-primary' 
-                  : 'border-transparent hover:border-primary/10'
-              } transition-colors bg-neutral-100 rounded-lg shadow-[5px_5px_10px_#d9d9d9,_-5px_-5px_10px_#ffffff]`}
-              onClick={() => setSelectedDate(day.date)}
-              whileHover={{ y: -3 }}
-              whileTap={{ y: 0 }}
-            >
-              <span className={`text-xs ${
-                isSameDay(selectedDate, day.date) 
-                  ? 'text-primary font-medium' 
-                  : 'text-neutral-500'
-              }`}>
-                {day.abbr}
-              </span>
-              <span className={`text-lg font-medium mt-1 ${
-                isSameDay(selectedDate, day.date) 
-                  ? 'text-primary' 
-                  : isToday(day.date) 
-                    ? 'text-success' 
-                    : ''
-              }`}>
-                {day.day}
-              </span>
-            </motion.button>
-          ))}
+      {showWeekDayPicker && (
+        <div className="overflow-x-auto">
+          <div className="flex min-w-max space-x-3 mb-6">
+            {weekDays.map((day, index) => (
+              <motion.button 
+                key={index}
+                className={`min-w-[60px] py-3 px-2 flex flex-col items-center border-2 ${
+                  isSameDay(selectedDate, day.date) 
+                    ? 'border-primary' 
+                    : 'border-transparent hover:border-primary/10'
+                } transition-colors bg-neutral-100 rounded-lg shadow-[5px_5px_10px_#d9d9d9,_-5px_-5px_10px_#ffffff]`}
+                onClick={() => setSelectedDate(day.date)}
+                whileHover={{ y: -3 }}
+                whileTap={{ y: 0 }}
+              >
+                <span className={`text-xs ${
+                  isSameDay(selectedDate, day.date) 
+                    ? 'text-primary font-medium' 
+                    : 'text-neutral-500'
+                }`}>
+                  {day.abbr}
+                </span>
+                <span className={`text-lg font-medium mt-1 ${
+                  isSameDay(selectedDate, day.date) 
+                    ? 'text-primary' 
+                    : isToday(day.date) 
+                      ? 'text-success' 
+                      : ''
+                }`}>
+                  {day.day}
+                </span>
+              </motion.button>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
       
       {isLoading ? (
         <div className="flex justify-center py-8">
@@ -322,7 +343,9 @@ export default function ActivitySection() {
         <>
           {activities.length === 0 ? (
             <div className="text-center py-8">
-              <p className="text-neutral-500 mb-4">No activities for {format(selectedDate, "MMMM d, yyyy")}</p>
+              <p className="text-neutral-500 mb-4">
+                No activities for {format(selectedDate, "MMMM d, yyyy")}
+              </p>
               <Button onClick={() => setIsAddDialogOpen(true)}>
                 <Plus className="h-4 w-4 mr-2" />
                 Add Activity
