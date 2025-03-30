@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800px" height="600px" viewBox="0 0 800 600" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Progress Illustration</title>
+    <defs>
+        <linearGradient x1="0%" y1="0%" x2="100%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#8B5CF6" offset="0%"></stop>
+            <stop stop-color="#6D28D9" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="0%" y1="0%" x2="100%" y2="100%" id="linearGradient-2">
+            <stop stop-color="#EC4899" offset="0%"></stop>
+            <stop stop-color="#BE185D" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="0%" y1="0%" x2="100%" y2="100%" id="linearGradient-3">
+            <stop stop-color="#4F46E5" offset="0%"></stop>
+            <stop stop-color="#3730A3" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="0%" y1="0%" x2="100%" y2="100%" id="linearGradient-4">
+            <stop stop-color="#F59E0B" offset="0%"></stop>
+            <stop stop-color="#D97706" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Progress-Illustration" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <!-- Background Elements -->
+        <circle id="Bg-Circle-1" fill="url(#linearGradient-1)" opacity="0.1" cx="200" cy="300" r="120"></circle>
+        <circle id="Bg-Circle-2" fill="url(#linearGradient-2)" opacity="0.1" cx="600" cy="150" r="80"></circle>
+        <circle id="Bg-Circle-3" fill="url(#linearGradient-3)" opacity="0.1" cx="400" cy="450" r="100"></circle>
+        
+        <!-- Trophy -->
+        <g id="Trophy" transform="translate(350.000000, 100.000000)">
+            <path d="M40,0 L60,0 L60,10 C60,25 70,40 85,40 C100,40 100,25 100,10 L100,0 L100,10 C100,25 115,40 130,40 C145,40 150,25 150,10 L150,0 L160,0 C160,70 130,100 100,110 L100,120 L120,120 L120,140 L80,140 L80,120 L100,120 L100,110 C70,100 40,70 40,0 Z" id="Trophy-Shape" fill="url(#linearGradient-4)"></path>
+            <rect id="Base" fill="#D97706" x="65" y="140" width="70" height="20" rx="5"></rect>
+        </g>
+        
+        <!-- Progress Chart -->
+        <g id="Progress-Chart" transform="translate(300.000000, 250.000000)">
+            <rect id="Chart-Bg" fill="#F9FAFB" opacity="0.5" x="0" y="0" width="200" height="150" rx="10"></rect>
+            <path d="M20,130 L20,30 L180,30" id="Axis" stroke="#6B7280" stroke-width="2" stroke-linecap="round"></path>
+            <path d="M20,110 L50,90 L80,100 L110,70 L140,50 L170,30" id="Progress-Line" stroke="url(#linearGradient-1)" stroke-width="3" stroke-linecap="round"></path>
+            <circle id="Point-1" fill="#8B5CF6" cx="50" cy="90" r="5"></circle>
+            <circle id="Point-2" fill="#8B5CF6" cx="80" cy="100" r="5"></circle>
+            <circle id="Point-3" fill="#8B5CF6" cx="110" cy="70" r="5"></circle>
+            <circle id="Point-4" fill="#8B5CF6" cx="140" cy="50" r="5"></circle>
+            <circle id="Point-5" fill="#8B5CF6" cx="170" cy="30" r="5"></circle>
+        </g>
+        
+        <!-- Medal -->
+        <g id="Medal" transform="translate(100.000000, 250.000000)">
+            <circle id="Medal-Circle" fill="url(#linearGradient-1)" cx="50" cy="50" r="40"></circle>
+            <circle id="Medal-Inner" fill="#F9FAFB" opacity="0.8" cx="50" cy="50" r="30"></circle>
+            <polygon id="Star" fill="#8B5CF6" points="50 30 57.6 45.3 74.3 47.9 62.1 59.7 65.3 76.3 50 68.5 34.7 76.3 37.9 59.7 25.7 47.9 42.4 45.3"></polygon>
+            <rect id="Ribbon-1" fill="url(#linearGradient-1)" x="40" y="90" width="20" height="60" rx="5"></rect>
+            <rect id="Ribbon-2" fill="url(#linearGradient-1)" transform="translate(70.000000, 120.000000) rotate(30.000000) translate(-70.000000, -120.000000) " x="60" y="90" width="20" height="60" rx="5"></rect>
+            <rect id="Ribbon-3" fill="url(#linearGradient-1)" transform="translate(30.000000, 120.000000) rotate(-30.000000) translate(-30.000000, -120.000000) " x="20" y="90" width="20" height="60" rx="5"></rect>
+        </g>
+        
+        <!-- Achievement Badge -->
+        <g id="Badge" transform="translate(600.000000, 250.000000)">
+            <polygon id="Badge-Shape" fill="url(#linearGradient-2)" points="50 0 92.7 16.2 92.7 67.5 50 100 7.3 67.5 7.3 16.2"></polygon>
+            <circle id="Badge-Circle" fill="#F9FAFB" opacity="0.8" cx="50" cy="50" r="30"></circle>
+            <path d="M50,30 L65,45 L60,70 L50,60 L40,70 L35,45 Z" id="Trophy-Icon" fill="#EC4899"></path>
+        </g>
+        
+        <!-- Progress Bars -->
+        <g id="Progress-Bars" transform="translate(100.000000, 400.000000)">
+            <!-- Bar 1 -->
+            <rect id="Bar-1-Bg" fill="#E5E7EB" x="0" y="0" width="200" height="20" rx="10"></rect>
+            <rect id="Bar-1-Fill" fill="url(#linearGradient-1)" x="0" y="0" width="160" height="20" rx="10"></rect>
+            <text id="Bar-1-Text" font-family="Arial" font-size="12" font-weight="bold" fill="#FFFFFF" x="10" y="14">80%</text>
+            
+            <!-- Bar 2 -->
+            <rect id="Bar-2-Bg" fill="#E5E7EB" x="0" y="30" width="200" height="20" rx="10"></rect>
+            <rect id="Bar-2-Fill" fill="url(#linearGradient-2)" x="0" y="30" width="120" height="20" rx="10"></rect>
+            <text id="Bar-2-Text" font-family="Arial" font-size="12" font-weight="bold" fill="#FFFFFF" x="10" y="44">60%</text>
+            
+            <!-- Bar 3 -->
+            <rect id="Bar-3-Bg" fill="#E5E7EB" x="0" y="60" width="200" height="20" rx="10"></rect>
+            <rect id="Bar-3-Fill" fill="url(#linearGradient-3)" x="0" y="60" width="180" height="20" rx="10"></rect>
+            <text id="Bar-3-Text" font-family="Arial" font-size="12" font-weight="bold" fill="#FFFFFF" x="10" y="74">90%</text>
+        </g>
+        
+        <!-- Checkpoints -->
+        <g id="Checkpoints" transform="translate(500.000000, 400.000000)">
+            <!-- Checkpoint 1 -->
+            <circle id="Checkpoint-1-Circle" fill="#F9FAFB" stroke="url(#linearGradient-1)" stroke-width="3" cx="25" cy="25" r="20"></circle>
+            <path d="M15,25 L22,32 L35,18" id="Checkpoint-1-Check" stroke="#8B5CF6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+            <line x1="25" y1="45" x2="25" y2="75" id="Checkpoint-1-Line" stroke="#E5E7EB" stroke-width="2" stroke-dasharray="5,5"></line>
+            
+            <!-- Checkpoint 2 -->
+            <circle id="Checkpoint-2-Circle" fill="#F9FAFB" stroke="url(#linearGradient-2)" stroke-width="3" cx="25" cy="95" r="20"></circle>
+            <path d="M15,95 L22,102 L35,88" id="Checkpoint-2-Check" stroke="#EC4899" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+            <line x1="25" y1="115" x2="25" y2="145" id="Checkpoint-2-Line" stroke="#E5E7EB" stroke-width="2" stroke-dasharray="5,5"></line>
+            
+            <!-- Checkpoint 3 -->
+            <circle id="Checkpoint-3-Circle" fill="#F9FAFB" stroke="#E5E7EB" stroke-width="3" cx="25" cy="165" r="20"></circle>
+            <text id="3" font-family="Arial" font-size="24" font-weight="bold" fill="#6B7280" text-anchor="middle" x="25" y="173">3</text>
+        </g>
+    </g>
+</svg>

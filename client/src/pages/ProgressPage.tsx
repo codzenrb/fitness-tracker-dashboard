@@ -33,6 +33,7 @@ import {
   ArrowUp,
   ArrowDown
 } from "lucide-react";
+import progressIllustration from "@/assets/images/progress-illustration.svg";
 
 // Custom stat card component
 const StatCard = ({ 
@@ -128,6 +129,44 @@ export default function ProgressPage() {
                 setDate={handleDateChange}
                 className="w-full sm:w-auto"
               />
+            </div>
+          </motion.div>
+
+          {/* Progress Illustration Banner */}
+          <motion.div 
+            className="mb-6 relative overflow-hidden rounded-xl"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-pink-500/20 backdrop-filter backdrop-blur-sm"></div>
+            <div className="flex flex-col md:flex-row items-center px-6 py-8 relative">
+              <div className="md:w-1/2 mb-6 md:mb-0">
+                <h2 className="text-2xl font-bold text-purple-900 mb-2">
+                  Celebrate Your Progress
+                </h2>
+                <p className="text-purple-800 mb-4">
+                  Track your achievements, visualize your progress, and celebrate every milestone on your fitness journey.
+                </p>
+                <motion.button
+                  className="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-6 py-2 rounded-full shadow-lg flex items-center"
+                  whileHover={{ scale: 1.05, boxShadow: "0 10px 25px -5px rgba(139, 92, 246, 0.4)" }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <Award className="h-4 w-4 mr-2" />
+                  <span>View Achievements</span>
+                </motion.button>
+              </div>
+              <div className="md:w-1/2 flex justify-center">
+                <motion.img 
+                  src={progressIllustration} 
+                  alt="Progress Illustration" 
+                  className="max-w-full md:max-w-sm"
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ duration: 0.5, delay: 0.2 }}
+                />
+              </div>
             </div>
           </motion.div>
 

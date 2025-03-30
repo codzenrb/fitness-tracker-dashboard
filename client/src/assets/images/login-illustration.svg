@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800px" height="600px" viewBox="0 0 800 600" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Login Illustration</title>
+    <defs>
+        <linearGradient x1="0%" y1="0%" x2="100%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#4F46E5" offset="0%"></stop>
+            <stop stop-color="#7E22CE" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="0%" y1="0%" x2="100%" y2="100%" id="linearGradient-2">
+            <stop stop-color="#EC4899" offset="0%"></stop>
+            <stop stop-color="#C026D3" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="0%" y1="0%" x2="100%" y2="100%" id="linearGradient-3">
+            <stop stop-color="#8B5CF6" offset="0%"></stop>
+            <stop stop-color="#6366F1" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Login-Illustration" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <!-- Background Elements -->
+        <circle id="Bg-Circle-1" fill="url(#linearGradient-1)" opacity="0.15" cx="200" cy="300" r="150"></circle>
+        <circle id="Bg-Circle-2" fill="url(#linearGradient-2)" opacity="0.15" cx="600" cy="200" r="120"></circle>
+        <circle id="Bg-Circle-3" fill="url(#linearGradient-3)" opacity="0.15" cx="400" cy="450" r="80"></circle>
+        
+        <!-- Abstract Shapes -->
+        <path d="M100,100 L150,150 L100,200 Z" id="Triangle-1" fill="#8B5CF6" opacity="0.6"></path>
+        <rect id="Square-1" fill="#EC4899" opacity="0.6" x="650" y="300" width="80" height="80" rx="10"></rect>
+        <circle id="Circle-1" fill="#4F46E5" opacity="0.6" cx="300" cy="100" r="40"></circle>
+        <rect id="Rectangle-1" fill="#6366F1" opacity="0.6" transform="translate(200.000000, 500.000000) rotate(45.000000) translate(-200.000000, -500.000000) " x="175" y="475" width="50" height="50" rx="10"></rect>
+        
+        <!-- Fitness Person -->
+        <g id="Person" transform="translate(350.000000, 150.000000)">
+            <!-- Head -->
+            <circle id="Head" fill="#6366F1" cx="50" cy="50" r="40"></circle>
+            
+            <!-- Phone with Fitness App -->
+            <g id="Phone" transform="translate(125.000000, 100.000000)">
+                <rect id="Phone-Frame" fill="#1F2937" x="0" y="0" width="100" height="200" rx="20"></rect>
+                <rect id="Phone-Screen" fill="#F9FAFB" x="10" y="10" width="80" height="180" rx="5"></rect>
+                
+                <!-- App Interface -->
+                <rect id="App-Header" fill="#8B5CF6" x="10" y="10" width="80" height="30" rx="5"></rect>
+                <circle id="Profile-Pic" fill="#C4B5FD" cx="30" cy="25" r="8"></circle>
+                <line x1="50" y1="20" x2="80" y2="20" id="Menu-1" stroke="#F9FAFB" stroke-width="2" stroke-linecap="round"></line>
+                <line x1="50" y1="30" x2="70" y2="30" id="Menu-2" stroke="#F9FAFB" stroke-width="2" stroke-linecap="round"></line>
+                
+                <!-- Fitness Stats -->
+                <rect id="Stats-Box" fill="#F3F4F6" x="20" y="50" width="60" height="50" rx="5"></rect>
+                <circle id="Progress-Ring" stroke="#8B5CF6" stroke-width="4" cx="50" cy="75" r="15" stroke-dasharray="75 100"></circle>
+                <text id="Percentage" font-family="Arial" font-size="10" font-weight="bold" fill="#8B5CF6" text-anchor="middle" x="50" y="78">75%</text>
+                
+                <!-- Activity Feed -->
+                <rect id="Activity-1" fill="#F3F4F6" x="20" y="110" width="60" height="15" rx="3"></rect>
+                <rect id="Activity-2" fill="#F3F4F6" x="20" y="130" width="60" height="15" rx="3"></rect>
+                <rect id="Activity-3" fill="#F3F4F6" x="20" y="150" width="60" height="15" rx="3"></rect>
+                
+                <!-- Bottom Nav -->
+                <rect id="Bottom-Nav" fill="#8B5CF6" x="10" y="175" width="80" height="15" rx="3"></rect>
+                <circle id="Nav-Item-1" fill="#F9FAFB" cx="30" cy="182.5" r="3"></circle>
+                <circle id="Nav-Item-2" fill="#F9FAFB" cx="50" cy="182.5" r="3"></circle>
+                <circle id="Nav-Item-3" fill="#F9FAFB" cx="70" cy="182.5" r="3"></circle>
+            </g>
+            
+            <!-- Body -->
+            <path d="M20,100 C20,150 80,150 80,100 L65,220 C65,230 35,230 35,220 L20,100 Z" id="Body" fill="#6366F1"></path>
+            
+            <!-- Left Arm -->
+            <path d="M20,110 C-10,130 -20,200 -30,220 C-35,230 -15,240 -10,230 C0,210 10,150 35,130" id="Left-Arm" fill="#6366F1"></path>
+            
+            <!-- Right Arm Holding Phone -->
+            <path d="M80,110 C100,120 115,130 120,150 L130,100 L125,100 L125,250 L130,250 L130,200 C130,170 110,140 80,135" id="Right-Arm" fill="#6366F1"></path>
+            
+            <!-- Legs -->
+            <path d="M35,220 L25,330 C25,340 45,340 45,330 L50,220" id="Left-Leg" fill="#6366F1"></path>
+            <path d="M50,220 L55,330 C55,340 75,340 75,330 L65,220" id="Right-Leg" fill="#6366F1"></path>
+        </g>
+        
+        <!-- Login Form Visual -->
+        <g id="Login-Form" transform="translate(100.000000, 250.000000)">
+            <rect id="Form-Bg" fill="#F9FAFB" opacity="0.8" x="0" y="0" width="200" height="250" rx="20"></rect>
+            
+            <!-- Form Header -->
+            <circle id="Logo-Circle" fill="url(#linearGradient-3)" cx="100" cy="50" r="30"></circle>
+            <path d="M85,50 L95,60 L115,40" id="Logo-Check" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>
+            
+            <!-- Form Fields -->
+            <rect id="Field-1" fill="#F3F4F6" x="30" y="100" width="140" height="30" rx="5"></rect>
+            <rect id="Field-2" fill="#F3F4F6" x="30" y="150" width="140" height="30" rx="5"></rect>
+            
+            <!-- Login Button -->
+            <rect id="Button" fill="url(#linearGradient-3)" x="60" y="200" width="80" height="30" rx="15"></rect>
+            <text id="Login-Text" font-family="Arial" font-size="14" font-weight="bold" fill="#FFFFFF" text-anchor="middle" x="100" y="220">LOGIN</text>
+        </g>
+        
+        <!-- Mobile OTP Verification Visual -->
+        <g id="OTP-Verification" transform="translate(600.000000, 350.000000)">
+            <rect id="Phone-Frame" fill="#1F2937" x="0" y="0" width="120" height="200" rx="20"></rect>
+            <rect id="Phone-Screen" fill="#F9FAFB" x="10" y="10" width="100" height="180" rx="5"></rect>
+            
+            <!-- OTP Interface -->
+            <text id="OTP-Header" font-family="Arial" font-size="12" font-weight="bold" fill="#1F2937" text-anchor="middle" x="60" y="40">VERIFY OTP</text>
+            
+            <!-- OTP Input Fields -->
+            <rect id="OTP-Field-1" fill="#F3F4F6" stroke="#8B5CF6" stroke-width="2" x="20" y="60" width="20" height="30" rx="5"></rect>
+            <rect id="OTP-Field-2" fill="#F3F4F6" stroke="#8B5CF6" stroke-width="2" x="45" y="60" width="20" height="30" rx="5"></rect>
+            <rect id="OTP-Field-3" fill="#F3F4F6" stroke="#8B5CF6" stroke-width="2" x="70" y="60" width="20" height="30" rx="5"></rect>
+            <rect id="OTP-Field-4" fill="#F3F4F6" stroke="#8B5CF6" stroke-width="2" x="95" y="60" width="20" height="30" rx="5"></rect>
+            
+            <!-- Timer -->
+            <circle id="Timer-Circle" stroke="#8B5CF6" stroke-width="2" cx="60" cy="120" r="25" stroke-dasharray="125 160"></circle>
+            <text id="Timer-Text" font-family="Arial" font-size="12" font-weight="bold" fill="#8B5CF6" text-anchor="middle" x="60" y="125">01:30</text>
+            
+            <!-- Verify Button -->
+            <rect id="Verify-Button" fill="url(#linearGradient-3)" x="30" y="160" width="60" height="20" rx="10"></rect>
+            <text id="Verify-Text" font-family="Arial" font-size="10" font-weight="bold" fill="#FFFFFF" text-anchor="middle" x="60" y="174">VERIFY</text>
+        </g>
+    </g>
+</svg>

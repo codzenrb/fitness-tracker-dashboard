@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800px" height="600px" viewBox="0 0 800 600" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Nutrition Illustration</title>
+    <defs>
+        <linearGradient x1="0%" y1="0%" x2="100%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#10B981" offset="0%"></stop>
+            <stop stop-color="#059669" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="0%" y1="0%" x2="100%" y2="100%" id="linearGradient-2">
+            <stop stop-color="#F59E0B" offset="0%"></stop>
+            <stop stop-color="#D97706" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="0%" y1="0%" x2="100%" y2="100%" id="linearGradient-3">
+            <stop stop-color="#EF4444" offset="0%"></stop>
+            <stop stop-color="#B91C1C" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="0%" y1="0%" x2="100%" y2="100%" id="linearGradient-4">
+            <stop stop-color="#3B82F6" offset="0%"></stop>
+            <stop stop-color="#1D4ED8" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Nutrition-Illustration" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <!-- Background Elements -->
+        <circle id="Bg-Circle-1" fill="url(#linearGradient-1)" opacity="0.1" cx="200" cy="400" r="120"></circle>
+        <circle id="Bg-Circle-2" fill="url(#linearGradient-2)" opacity="0.1" cx="600" cy="200" r="100"></circle>
+        <circle id="Bg-Circle-3" fill="url(#linearGradient-3)" opacity="0.1" cx="400" cy="100" r="60"></circle>
+        
+        <!-- Plate with Food -->
+        <g id="Plate" transform="translate(300.000000, 250.000000)">
+            <circle id="Plate-Base" fill="#F9FAFB" opacity="0.8" cx="100" cy="100" r="100"></circle>
+            <circle id="Plate-Rim" stroke="#D1D5DB" stroke-width="6" cx="100" cy="100" r="95"></circle>
+            
+            <!-- Food Items -->
+            <!-- Protein -->
+            <path d="M50,70 C60,60 80,60 90,70 C100,80 100,100 90,110 C80,120 60,120 50,110 C40,100 40,80 50,70 Z" id="Protein" fill="#F87171"></path>
+            <!-- Vegetables -->
+            <path d="M110,60 C120,50 140,50 150,60 C160,70 160,90 150,100 C140,110 120,110 110,100 C100,90 100,70 110,60 Z" id="Vegetables" fill="#34D399"></path>
+            <!-- Carbs -->
+            <path d="M70,120 C80,110 100,110 110,120 C120,130 120,150 110,160 C100,170 80,170 70,160 C60,150 60,130 70,120 Z" id="Carbs" fill="#FBBF24"></path>
+            <!-- Fruits -->
+            <circle id="Fruit-1" fill="#EC4899" cx="140" cy="140" r="15"></circle>
+            <circle id="Fruit-2" fill="#A855F7" cx="160" cy="120" r="10"></circle>
+        </g>
+        
+        <!-- Food Items Around -->
+        <!-- Apple -->
+        <g id="Apple" transform="translate(100.000000, 200.000000)">
+            <path d="M30,15 C35,5 45,5 50,15 C55,5 60,0 70,0 C80,0 85,10 80,20 C75,30 70,35 70,35 L30,35 C30,35 25,30 20,20 C15,10 20,0 30,0 C40,0 45,10 50,15 Z" id="Leaf" fill="#10B981"></path>
+            <circle id="Apple-Body" fill="#EF4444" cx="50" cy="55" r="30"></circle>
+        </g>
+        
+        <!-- Broccoli -->
+        <g id="Broccoli" transform="translate(150.000000, 400.000000)">
+            <path d="M40,60 L60,60 L50,100 Z" id="Stem" fill="#A7F3D0"></path>
+            <circle id="Floret-1" fill="#10B981" cx="35" cy="30" r="20"></circle>
+            <circle id="Floret-2" fill="#10B981" cx="50" cy="20" r="20"></circle>
+            <circle id="Floret-3" fill="#10B981" cx="65" cy="30" r="20"></circle>
+        </g>
+        
+        <!-- Banana -->
+        <g id="Banana" transform="translate(600.000000, 300.000000)">
+            <path d="M20,100 C-20,70 30,0 80,0 C130,0 120,40 100,60 C80,80 60,80 20,100 Z" id="Banana-Shape" fill="#FBBF24"></path>
+        </g>
+        
+        <!-- Water Bottle -->
+        <g id="Water-Bottle" transform="translate(500.000000, 150.000000)">
+            <path d="M40,10 L60,10 L65,30 L65,90 C65,95 60,100 55,100 L45,100 C40,100 35,95 35,90 L35,30 L40,10 Z" id="Bottle" fill="#3B82F6" opacity="0.7"></path>
+            <path d="M40,10 L60,10 L60,0 L40,0 Z" id="Cap" fill="#1D4ED8"></path>
+        </g>
+        
+        <!-- Nutrition Chart -->
+        <g id="Nutrition-Chart" transform="translate(550.000000, 400.000000)">
+            <rect id="Chart-Bg" fill="#F9FAFB" opacity="0.5" x="0" y="0" width="200" height="150" rx="10"></rect>
+            
+            <!-- Protein Bar -->
+            <rect id="Protein-Bar" fill="url(#linearGradient-3)" x="30" y="30" width="30" height="100" rx="5"></rect>
+            <text id="Protein-Label" font-family="Arial" font-size="12" font-weight="bold" fill="#6B7280" text-anchor="middle" x="45" y="145">Protein</text>
+            
+            <!-- Carbs Bar -->
+            <rect id="Carbs-Bar" fill="url(#linearGradient-2)" x="80" y="50" width="30" height="80" rx="5"></rect>
+            <text id="Carbs-Label" font-family="Arial" font-size="12" font-weight="bold" fill="#6B7280" text-anchor="middle" x="95" y="145">Carbs</text>
+            
+            <!-- Fat Bar -->
+            <rect id="Fat-Bar" fill="url(#linearGradient-4)" x="130" y="90" width="30" height="40" rx="5"></rect>
+            <text id="Fat-Label" font-family="Arial" font-size="12" font-weight="bold" fill="#6B7280" text-anchor="middle" x="145" y="145">Fat</text>
+        </g>
+    </g>
+</svg>

@@ -30,6 +30,7 @@ import {
   Clock,
   CalendarDays
 } from "lucide-react";
+import nutritionIllustration from "@/assets/images/nutrition-illustration.svg";
 
 // Custom Food Icon Component
 const FoodIcon = ({ icon: Icon, label, color }: { icon: any, label: string, color: string }) => (
@@ -94,6 +95,44 @@ export default function NutritionPage() {
                 setDate={handleDateChange}
                 className="w-full sm:w-auto"
               />
+            </div>
+          </motion.div>
+
+          {/* Nutrition Illustration Banner */}
+          <motion.div 
+            className="mb-6 relative overflow-hidden rounded-xl"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <div className="absolute inset-0 bg-gradient-to-r from-green-500/20 to-blue-500/20 backdrop-filter backdrop-blur-sm"></div>
+            <div className="flex flex-col md:flex-row items-center px-6 py-8 relative">
+              <div className="md:w-1/2 mb-6 md:mb-0">
+                <h2 className="text-2xl font-bold text-green-900 mb-2">
+                  Fuel Your Body Right
+                </h2>
+                <p className="text-green-800 mb-4">
+                  Track calories, monitor macros, and build healthy meal plans to optimize your nutrition and support your fitness goals.
+                </p>
+                <motion.button
+                  className="bg-gradient-to-r from-green-600 to-teal-600 text-white px-6 py-2 rounded-full shadow-lg flex items-center"
+                  whileHover={{ scale: 1.05, boxShadow: "0 10px 25px -5px rgba(16, 185, 129, 0.4)" }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <Apple className="h-4 w-4 mr-2" />
+                  <span>Log Meal</span>
+                </motion.button>
+              </div>
+              <div className="md:w-1/2 flex justify-center">
+                <motion.img 
+                  src={nutritionIllustration} 
+                  alt="Nutrition Illustration" 
+                  className="max-w-full md:max-w-sm"
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ duration: 0.5, delay: 0.2 }}
+                />
+              </div>
             </div>
           </motion.div>
 
