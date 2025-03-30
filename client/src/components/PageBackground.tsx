@@ -1,41 +1,80 @@
 import React, { ReactNode } from "react";
 import { motion } from "framer-motion";
+import { 
+  DecorativeCircle, 
+  DecorativeBlob, 
+  DecorativeDots,
+  WavyBackground,
+  PageDecorations
+} from "./ui/decorative-elements";
 
 interface PageBackgroundProps {
   children: ReactNode;
+  variant?: "default" | "workout" | "nutrition" | "progress";
 }
 
-export default function PageBackground({ children }: PageBackgroundProps) {
+export default function PageBackground({ 
+  children, 
+  variant = "default" 
+}: PageBackgroundProps) {
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-indigo-100 via-purple-50 to-pink-100 flex flex-col">
-      {/* Decorative elements similar to login page */}
-      <motion.div
-        className="fixed top-[-10%] right-[10%] w-[300px] h-[300px] rounded-full bg-gradient-to-br from-primary/60 to-purple-600/60 blur-3xl opacity-20"
-        animate={{
-          y: [0, 30, 0],
-          scale: [1, 1.1, 1],
-        }}
-        transition={{
-          duration: 8,
-          repeat: Infinity,
-          repeatType: "reverse",
-        }}
-      />
+    <div className="min-h-screen w-full bg-gradient-to-br from-indigo-100 via-purple-50 to-pink-100 flex flex-col relative overflow-hidden">
+      {/* Common decorative elements for all variants */}
+      <PageDecorations />
       
-      <motion.div
-        className="fixed bottom-[-10%] left-[15%] w-[400px] h-[400px] rounded-full bg-gradient-to-tr from-pink-500/40 to-indigo-500/40 blur-3xl opacity-20"
-        animate={{
-          y: [0, -40, 0],
-          scale: [1, 1.2, 1],
-        }}
-        transition={{
-          duration: 10,
-          repeat: Infinity,
-          repeatType: "reverse",
-        }}
-      />
+      {/* Variant specific decorations */}
+      {variant === "workout" && (
+        <>
+          <DecorativeCircle
+            className="top-[5%] right-[5%]"
+            color="accent"
+            size={150}
+            opacity={0.15}
+          />
+          <DecorativeDots
+            className="absolute top-[10%] left-[5%]"
+            color="primary"
+            rows={4}
+            cols={4}
+          />
+        </>
+      )}
       
-      <div className="z-10 w-full">
+      {variant === "nutrition" && (
+        <>
+          <DecorativeCircle
+            className="bottom-[15%] left-[10%]"
+            color="success"
+            size={180}
+            opacity={0.12}
+          />
+          <DecorativeBlob
+            className="top-[20%] right-[15%] rotate-12"
+            color="warning"
+            scale={0.7}
+            opacity={0.08}
+          />
+        </>
+      )}
+      
+      {variant === "progress" && (
+        <>
+          <DecorativeCircle
+            className="top-[15%] left-[8%]"
+            color="secondary"
+            size={120}
+            opacity={0.1}
+          />
+          <DecorativeDots
+            className="absolute bottom-[15%] right-[8%]"
+            color="accent"
+            rows={3}
+            cols={5}
+          />
+        </>
+      )}
+      
+      <div className="z-10 w-full relative">
         {children}
       </div>
     </div>
