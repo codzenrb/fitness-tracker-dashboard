@@ -5,7 +5,10 @@ import { Toaster } from "@/components/ui/toaster";
 import Dashboard from "@/components/Dashboard";
 import Login from "@/components/Login";
 import NotFound from "@/pages/not-found";
-import { UserProvider, useUser, UserData } from "./contexts/UserContext";
+import WorkoutsPage from "@/pages/WorkoutsPage";
+import NutritionPage from "@/pages/NutritionPage";
+import ProgressPage from "@/pages/ProgressPage";
+import { UserProvider, useUser } from "./contexts/UserContext";
 
 function AppRouter() {
   const { user, login } = useUser();
@@ -25,14 +28,31 @@ function AppRouter() {
     });
   };
 
+  // If not logged in, redirect to login page
+  if (!user.isLoggedIn) {
+    return (
+      <>
+        <Login onLogin={handleLogin} />
+        <Toaster />
+      </>
+    );
+  }
+
+  // If logged in, show the appropriate page based on the route
   return (
     <>
       <Switch>
-        <Route path="/login">
-          {user.isLoggedIn ? <Dashboard /> : <Login onLogin={handleLogin} />}
+        <Route path="/workouts">
+          <WorkoutsPage />
+        </Route>
+        <Route path="/nutrition">
+          <NutritionPage />
+        </Route>
+        <Route path="/progress">
+          <ProgressPage />
         </Route>
         <Route path="/">
-          {user.isLoggedIn ? <Dashboard /> : <Login onLogin={handleLogin} />}
+          <Dashboard />
         </Route>
         <Route>
           <NotFound />

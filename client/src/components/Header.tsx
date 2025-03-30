@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link, useLocation } from "wouter";
 import { motion } from "framer-motion";
 import { useUser } from "@/contexts/UserContext";
 import { Button } from "@/components/ui/button";
@@ -14,6 +15,7 @@ import {
 export default function Header() {
   const { user, logout } = useUser();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [location] = useLocation();
 
   // Get user initials for the avatar
   const getInitials = () => {
@@ -27,52 +29,65 @@ export default function Header() {
     logout();
   };
 
+  // Check if a link is active
+  const isActive = (path: string) => {
+    if (path === "/" && location === "/") return true;
+    if (path !== "/" && location.startsWith(path)) return true;
+    return false;
+  };
+
   return (
     <header className="py-4 px-6 flex justify-between items-center sticky top-0 z-10 bg-white/70 backdrop-blur-md border border-white/25 rounded-b-lg">
-      <div className="flex items-center gap-3">
-        <motion.div 
-          className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center text-white"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          <i className="bx bx-pulse text-xl"></i>
-        </motion.div>
-        <h1 className="text-2xl font-heading font-semibold text-neutral-800">FitTrack</h1>
-      </div>
+      <Link href="/">
+        <div className="flex items-center gap-3 cursor-pointer">
+          <motion.div 
+            className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center text-white"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <i className="bx bx-pulse text-xl"></i>
+          </motion.div>
+          <h1 className="text-2xl font-heading font-semibold text-neutral-800">FitTrack</h1>
+        </div>
+      </Link>
       
       <div className="hidden md:flex items-center gap-6">
-        <motion.a 
-          href="#" 
-          className="text-neutral-600 hover:text-primary transition-colors"
-          whileHover={{ y: -2 }}
-          transition={{ type: "spring", stiffness: 300 }}
-        >
-          Dashboard
-        </motion.a>
-        <motion.a 
-          href="#" 
-          className="text-neutral-600 hover:text-primary transition-colors"
-          whileHover={{ y: -2 }}
-          transition={{ type: "spring", stiffness: 300 }}
-        >
-          Workouts
-        </motion.a>
-        <motion.a 
-          href="#" 
-          className="text-neutral-600 hover:text-primary transition-colors"
-          whileHover={{ y: -2 }}
-          transition={{ type: "spring", stiffness: 300 }}
-        >
-          Nutrition
-        </motion.a>
-        <motion.a 
-          href="#" 
-          className="text-neutral-600 hover:text-primary transition-colors"
-          whileHover={{ y: -2 }}
-          transition={{ type: "spring", stiffness: 300 }}
-        >
-          Progress
-        </motion.a>
+        <Link href="/">
+          <motion.span 
+            className={`${isActive('/') ? 'text-primary font-medium' : 'text-neutral-600'} hover:text-primary transition-colors cursor-pointer`}
+            whileHover={{ y: -2 }}
+            transition={{ type: "spring", stiffness: 300 }}
+          >
+            Dashboard
+          </motion.span>
+        </Link>
+        <Link href="/workouts">
+          <motion.span 
+            className={`${isActive('/workouts') ? 'text-primary font-medium' : 'text-neutral-600'} hover:text-primary transition-colors cursor-pointer`}
+            whileHover={{ y: -2 }}
+            transition={{ type: "spring", stiffness: 300 }}
+          >
+            Workouts
+          </motion.span>
+        </Link>
+        <Link href="/nutrition">
+          <motion.span 
+            className={`${isActive('/nutrition') ? 'text-primary font-medium' : 'text-neutral-600'} hover:text-primary transition-colors cursor-pointer`}
+            whileHover={{ y: -2 }}
+            transition={{ type: "spring", stiffness: 300 }}
+          >
+            Nutrition
+          </motion.span>
+        </Link>
+        <Link href="/progress">
+          <motion.span 
+            className={`${isActive('/progress') ? 'text-primary font-medium' : 'text-neutral-600'} hover:text-primary transition-colors cursor-pointer`}
+            whileHover={{ y: -2 }}
+            transition={{ type: "spring", stiffness: 300 }}
+          >
+            Progress
+          </motion.span>
+        </Link>
       </div>
       
       <div className="flex items-center gap-4">
@@ -123,10 +138,26 @@ export default function Header() {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -10 }}
         >
-          <a href="#" className="p-2 hover:bg-neutral-100 rounded-lg text-neutral-700">Dashboard</a>
-          <a href="#" className="p-2 hover:bg-neutral-100 rounded-lg text-neutral-700">Workouts</a>
-          <a href="#" className="p-2 hover:bg-neutral-100 rounded-lg text-neutral-700">Nutrition</a>
-          <a href="#" className="p-2 hover:bg-neutral-100 rounded-lg text-neutral-700">Progress</a>
+          <Link href="/" onClick={() => setIsMobileMenuOpen(false)}>
+            <span className={`p-2 block hover:bg-neutral-100 rounded-lg ${isActive('/') ? 'text-primary font-medium' : 'text-neutral-700'}`}>
+              Dashboard
+            </span>
+          </Link>
+          <Link href="/workouts" onClick={() => setIsMobileMenuOpen(false)}>
+            <span className={`p-2 block hover:bg-neutral-100 rounded-lg ${isActive('/workouts') ? 'text-primary font-medium' : 'text-neutral-700'}`}>
+              Workouts
+            </span>
+          </Link>
+          <Link href="/nutrition" onClick={() => setIsMobileMenuOpen(false)}>
+            <span className={`p-2 block hover:bg-neutral-100 rounded-lg ${isActive('/nutrition') ? 'text-primary font-medium' : 'text-neutral-700'}`}>
+              Nutrition
+            </span>
+          </Link>
+          <Link href="/progress" onClick={() => setIsMobileMenuOpen(false)}>
+            <span className={`p-2 block hover:bg-neutral-100 rounded-lg ${isActive('/progress') ? 'text-primary font-medium' : 'text-neutral-700'}`}>
+              Progress
+            </span>
+          </Link>
           <div className="p-2 hover:bg-neutral-100 rounded-lg">
             <ProfileEdit />
           </div>
