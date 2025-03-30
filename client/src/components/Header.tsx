@@ -2,7 +2,14 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { useUser } from "@/contexts/UserContext";
 import { Button } from "@/components/ui/button";
-import { LogOut } from "lucide-react"; 
+import { LogOut, Settings } from "lucide-react"; 
+import ProfileEdit from "./ProfileEdit";
+import { 
+  DropdownMenu, 
+  DropdownMenuContent, 
+  DropdownMenuItem, 
+  DropdownMenuTrigger 
+} from "@/components/ui/dropdown-menu";
 
 export default function Header() {
   const { user, logout } = useUser();
@@ -76,25 +83,30 @@ export default function Header() {
         >
           <i className="bx bx-bell text-xl text-neutral-600"></i>
         </motion.button>
-        <div className="flex items-center gap-2">
-          <motion.div 
-            className="w-9 h-9 rounded-full bg-primary flex items-center justify-center text-white font-medium"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            {getInitials()}
-          </motion.div>
-          <span className="hidden md:inline text-sm font-medium">{user.name}</span>
-        </div>
         
-        <Button 
-          variant="ghost" 
-          size="icon"
-          onClick={handleLogout}
-          className="text-neutral-600 hover:text-red-500"
-        >
-          <LogOut className="h-5 w-5" />
-        </Button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <div className="flex items-center gap-2 cursor-pointer">
+              <motion.div 
+                className="w-9 h-9 rounded-full bg-primary flex items-center justify-center text-white font-medium"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                {getInitials()}
+              </motion.div>
+              <span className="hidden md:inline text-sm font-medium">{user.name}</span>
+            </div>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-56">
+            <DropdownMenuItem className="p-0">
+              <ProfileEdit />
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={handleLogout} className="text-red-500">
+              <LogOut className="mr-2 h-4 w-4" />
+              <span>Logout</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
         
         <div className="md:hidden">
           <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="p-2">
@@ -115,6 +127,9 @@ export default function Header() {
           <a href="#" className="p-2 hover:bg-neutral-100 rounded-lg text-neutral-700">Workouts</a>
           <a href="#" className="p-2 hover:bg-neutral-100 rounded-lg text-neutral-700">Nutrition</a>
           <a href="#" className="p-2 hover:bg-neutral-100 rounded-lg text-neutral-700">Progress</a>
+          <div className="p-2 hover:bg-neutral-100 rounded-lg">
+            <ProfileEdit />
+          </div>
           <button 
             onClick={handleLogout}
             className="p-2 hover:bg-red-50 rounded-lg text-red-500 flex items-center gap-2"

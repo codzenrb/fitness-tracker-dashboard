@@ -1,37 +1,93 @@
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Neumorphic } from "./ui/neumorphic";
+import EditableGoal, { GoalItemProps } from "./EditableGoal";
+import { Plus, Loader2 } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { format, parseISO } from "date-fns";
+import { apiRequest } from "@/lib/queryClient";
+import { toast } from "@/hooks/use-toast";
+
+interface GoalData {
+  id: number;
+  title: string;
+  description: string;
+  targetValue: number;
+  currentValue: number;
+  unit: string;
+  startDate: string;
+  endDate: string;
+  createdAt: string;
+  userId: number;
+}
 
 export default function GoalsSection() {
-  const goals = [
-    {
-      title: "Weight Goal",
-      description: "Lose 10 pounds",
-      progress: "4.2/10 lbs",
-      progressColor: "bg-success",
-      progressPercentage: 42,
-      startDate: "May 10",
-      endDate: "Jul 10",
-      progressText: "Started"
-    },
-    {
-      title: "Running Goal",
-      description: "Run 50 miles this month",
-      progress: "31.5/50 mi",
-      progressColor: "bg-primary",
-      progressPercentage: 63,
-      progressText: "Progress: 63%",
-      timeLeft: "18 days left"
-    },
-    {
-      title: "Strength Goal",
-      description: "Bench press 200 lbs",
-      progress: "185/200 lbs",
-      progressColor: "bg-warning",
-      progressPercentage: 92,
-      progressText: "Progress: 92%",
-      timeLeft: "Almost there!"
+  const [goals, setGoals] = useState<GoalItemProps[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  const fetchGoals = async () => {
+    setIsRefreshing(true);
+    try {
+      const data = await apiRequest<GoalData[]>('/api/goals');
+      
+      if (data) {
+        // Transform API data into UI format
+        const formattedGoals = data.map(goal => {
+          const percentage = Math.round((goal.currentValue / goal.targetValue) * 100);
+          const getProgressColor = (percentage: number) => {
+            if (percentage < 30) return "bg-neutral-400";
+            if (percentage < 60) return "bg-primary";
+            if (percentage < 90) return "bg-warning";
+            return "bg-success";
+          };
+          
+          const startDateFormatted = format(parseISO(goal.startDate), 'MMM d');
+          const endDateFormatted = format(parseISO(goal.endDate), 'MMM d');
+          
+          // Calculate days left
+          const today = new Date();
+          const endDate = parseISO(goal.endDate);
+          const daysLeft = Math.ceil((endDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+          
+          return {
+            id: goal.id,
+            title: goal.title,
+            description: goal.description,
+            targetValue: goal.targetValue,
+            currentValue: goal.currentValue,
+            unit: goal.unit,
+            progress: `${goal.currentValue}/${goal.targetValue} ${goal.unit}`,
+            progressColor: getProgressColor(percentage),
+            progressPercentage: percentage,
+            startDate: startDateFormatted,
+            endDate: endDateFormatted,
+            progressText: percentage < 5 ? "Started" : `Progress: ${percentage}%`,
+            timeLeft: daysLeft > 0 ? `${daysLeft} days left` : "Time's up!"
+          };
+        });
+        
+        setGoals(formattedGoals);
+      }
+    } catch (error) {
+      console.error("Failed to fetch goals:", error);
+      toast({
+        title: "Error",
+        description: "Failed to load goals. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+      setIsRefreshing(false);
     }
-  ];
+  };
+
+  // Load goals on component mount
+  useEffect(() => {
+    fetchGoals();
+  }, []);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -52,56 +108,90 @@ export default function GoalsSection() {
     }
   };
 
+  // Empty goal for the create form
+  const emptyGoal: GoalItemProps = {
+    title: "",
+    description: "",
+    progress: "0/0",
+    progressColor: "bg-neutral-400",
+    progressPercentage: 0,
+    progressText: "New",
+    targetValue: 0,
+    currentValue: 0,
+    unit: "",
+  };
+
   return (
     <Neumorphic className="p-6">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-xl font-heading font-semibold">Fitness Goals</h2>
-        <motion.button 
-          className="text-neutral-600 hover:text-neutral-800 transition-colors"
-          whileHover={{ scale: 1.1, rotate: 90 }}
-          whileTap={{ scale: 0.9 }}
-          transition={{ duration: 0.2 }}
-        >
-          <i className="bx bx-plus-circle text-xl"></i>
-        </motion.button>
+        
+        <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
+          <DialogTrigger asChild>
+            <motion.button 
+              className="text-neutral-600 hover:text-neutral-800 transition-colors"
+              whileHover={{ scale: 1.1, rotate: 90 }}
+              whileTap={{ scale: 0.9 }}
+              transition={{ duration: 0.2 }}
+            >
+              <Plus className="h-5 w-5" />
+            </motion.button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Add New Goal</DialogTitle>
+            </DialogHeader>
+            <EditableGoal {...emptyGoal} onUpdate={() => {
+              fetchGoals();
+              setIsAddDialogOpen(false);
+            }} />
+          </DialogContent>
+        </Dialog>
       </div>
       
-      <motion.div 
-        className="space-y-5"
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-      >
-        {goals.map((goal, index) => (
-          <motion.div 
-            key={index}
-            variants={itemVariants}
-            whileHover={{ y: -5, transition: { duration: 0.2 } }}
-          >
-            <Neumorphic className="p-5">
-              <div className="flex justify-between items-start mb-3">
-                <div>
-                  <h3 className="font-medium">{goal.title}</h3>
-                  <p className="text-sm text-neutral-600">{goal.description}</p>
-                </div>
-                <span className="text-sm font-medium text-success">{goal.progress}</span>
-              </div>
-              <div className="h-2 rounded-full w-full bg-neutral-100 shadow-[inset_2px_2px_5px_#d9d9d9,_inset_-2px_-2px_5px_#ffffff]">
+      {isLoading ? (
+        <div className="flex justify-center py-8">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        </div>
+      ) : (
+        <>
+          {goals.length === 0 ? (
+            <div className="text-center py-8">
+              <p className="text-neutral-500 mb-4">You don't have any goals yet.</p>
+              <Button onClick={() => setIsAddDialogOpen(true)}>
+                <Plus className="h-4 w-4 mr-2" />
+                Add Your First Goal
+              </Button>
+            </div>
+          ) : (
+            <motion.div 
+              className="space-y-5"
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+            >
+              {goals.map((goal, index) => (
                 <motion.div 
-                  className={`${goal.progressColor} h-full rounded-full`}
-                  initial={{ width: 0 }}
-                  animate={{ width: `${goal.progressPercentage}%` }}
-                  transition={{ duration: 0.8, delay: index * 0.1 }}
-                ></motion.div>
-              </div>
-              <div className="flex justify-between mt-2">
-                <span className="text-xs text-neutral-500">{goal.progressText}: {goal.startDate}</span>
-                <span className="text-xs text-neutral-500">{goal.timeLeft || `Target: ${goal.endDate}`}</span>
-              </div>
-            </Neumorphic>
-          </motion.div>
-        ))}
-      </motion.div>
+                  key={goal.id || index}
+                  variants={itemVariants}
+                  whileHover={{ y: -5, transition: { duration: 0.2 } }}
+                >
+                  <EditableGoal 
+                    {...goal} 
+                    onUpdate={fetchGoals}
+                  />
+                </motion.div>
+              ))}
+              
+              {isRefreshing && (
+                <div className="flex justify-center py-2">
+                  <Loader2 className="h-5 w-5 animate-spin text-primary" />
+                </div>
+              )}
+            </motion.div>
+          )}
+        </>
+      )}
     </Neumorphic>
   );
 }

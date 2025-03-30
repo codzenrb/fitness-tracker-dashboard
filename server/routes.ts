@@ -452,6 +452,82 @@ export async function registerRoutes(app: Express): Promise<Server> {
       });
     }
   });
+  
+  // User profile endpoint
+  app.get("/api/user/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const user = await storage.getUser(id);
+      
+      if (!user) {
+        return res.status(404).json({ 
+          success: false, 
+          message: "User not found" 
+        });
+      }
+      
+      res.json({
+        success: true,
+        user: {
+          id: user.id,
+          name: user.name,
+          mobileNumber: user.mobileNumber,
+          height: user.height,
+          weight: user.weight,
+          goal: user.goal
+        }
+      });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ 
+        success: false, 
+        message: "Failed to fetch user profile" 
+      });
+    }
+  });
+  
+  // Update user profile
+  app.patch("/api/user/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const user = await storage.getUser(id);
+      
+      if (!user) {
+        return res.status(404).json({ 
+          success: false, 
+          message: "User not found" 
+        });
+      }
+      
+      const updatedUser = await storage.updateUser(id, req.body);
+      
+      if (!updatedUser) {
+        return res.status(500).json({ 
+          success: false, 
+          message: "Failed to update user profile" 
+        });
+      }
+      
+      res.json({
+        success: true,
+        message: "User profile updated successfully",
+        user: {
+          id: updatedUser.id,
+          name: updatedUser.name,
+          mobileNumber: updatedUser.mobileNumber,
+          height: updatedUser.height,
+          weight: updatedUser.weight,
+          goal: updatedUser.goal
+        }
+      });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ 
+        success: false, 
+        message: "Failed to update user profile" 
+      });
+    }
+  });
 
   // Initialize the database with sample data for the demo
   await initializeDemo();
