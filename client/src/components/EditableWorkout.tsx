@@ -104,7 +104,13 @@ export default function EditableWorkout({
     e.preventDefault();
     
     try {
-      const submitData = { ...formData };
+      // Convert scheduledFor to ISO string if it's a Date object
+      const submitData = { 
+        ...formData,
+        scheduledFor: formData.scheduledFor instanceof Date 
+          ? formData.scheduledFor.toISOString()
+          : formData.scheduledFor
+      };
       
       if (id) { // Update existing workout
         const response = await apiRequest(`/api/workouts/${id}`, {
@@ -136,7 +142,10 @@ export default function EditableWorkout({
       
       // Close dialog and refresh data
       setIsEditDialogOpen(false);
-      if (onUpdate) onUpdate();
+      // Force immediate refresh
+      setTimeout(() => {
+        if (onUpdate) onUpdate();
+      }, 100);
     } catch (error) {
       console.error("Failed to save workout:", error);
       toast({
@@ -173,7 +182,10 @@ export default function EditableWorkout({
         
         // Close dialog and refresh data
         setIsRescheduleDialogOpen(false);
-        if (onUpdate) onUpdate();
+        // Force immediate refresh
+        setTimeout(() => {
+          if (onUpdate) onUpdate();
+        }, 100);
       }
     } catch (error) {
       console.error("Failed to reschedule workout:", error);
@@ -203,7 +215,10 @@ export default function EditableWorkout({
           variant: "default",
         });
         
-        if (onUpdate) onUpdate();
+        // Force immediate refresh
+        setTimeout(() => {
+          if (onUpdate) onUpdate();
+        }, 100);
       }
     } catch (error) {
       console.error("Failed to start workout:", error);
@@ -234,7 +249,10 @@ export default function EditableWorkout({
           variant: "default",
         });
         
-        if (onUpdate) onUpdate();
+        // Force immediate refresh
+        setTimeout(() => {
+          if (onUpdate) onUpdate();
+        }, 100);
       }
     } catch (error) {
       console.error("Failed to complete workout:", error);
@@ -263,7 +281,10 @@ export default function EditableWorkout({
         
         // Close dialog and refresh data
         setIsEditDialogOpen(false);
-        if (onUpdate) onUpdate();
+        // Force immediate refresh
+        setTimeout(() => {
+          if (onUpdate) onUpdate();
+        }, 100);
       }
     } catch (error) {
       console.error("Failed to delete workout:", error);
