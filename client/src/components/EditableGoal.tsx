@@ -7,12 +7,13 @@ import {
   DialogHeader, 
   DialogTitle 
 } from "@/components/ui/dialog";
-import { Pencil, Check, X, Trash } from "lucide-react";
+import { Pencil, Check, X, Trash, Share2, Award } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { apiRequest } from "@/lib/queryClient";
 import { toast } from "@/hooks/use-toast";
+import ShareAchievement from "./ShareAchievement";
 
 export type GoalItemProps = {
   id?: number;
@@ -175,6 +176,32 @@ export default function EditableGoal({
           <span className="text-xs text-neutral-500">{progressText}: {startDate}</span>
           <span className="text-xs text-neutral-500">{timeLeft || `Target: ${endDate}`}</span>
         </div>
+        
+        {/* Show the share button if goal is at least 90% complete */}
+        {progressPercentage >= 90 && (
+          <div className="mt-3">
+            <ShareAchievement
+              title={title}
+              description={`${progress} of my ${description} goal`}
+              date={startDate}
+              type="goal"
+              value={`${currentValue}/${targetValue} ${unit}`}
+              progress={progressPercentage}
+              triggerComponent={
+                <motion.button 
+                  className="w-full py-2 rounded-lg gradient-purple text-white transition-all shadow-md button-glow mt-2"
+                  whileHover={{ scale: 1.02, boxShadow: "0 6px 15px rgba(139, 92, 246, 0.25)" }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <span className="flex items-center justify-center gap-2">
+                    <Share2 className="h-4 w-4" />
+                    Share Achievement
+                  </span>
+                </motion.button>
+              }
+            />
+          </div>
+        )}
       </Neumorphic>
       
       <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
