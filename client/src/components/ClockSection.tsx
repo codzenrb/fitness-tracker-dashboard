@@ -4,6 +4,7 @@ import { Neumorphic } from "./ui/neumorphic";
 import AnalogClock from "./AnalogClock";
 import { Clock, Timer, Calendar, Activity, Dumbbell, Play, Pause, RotateCw } from "lucide-react";
 import { Link } from "wouter";
+import { apiRequest } from "@/lib/queryClient";
 
 export default function ClockSection() {
   const [digitalTime, setDigitalTime] = useState("");
@@ -12,6 +13,31 @@ export default function ClockSection() {
   const [activeTime, setActiveTime] = useState("1h 45m");
   const [timer, setTimer] = useState<NodeJS.Timeout | null>(null);
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
+  const [remainingWorkouts, setRemainingWorkouts] = useState(0);
+  
+  // Fetch workouts data
+  useEffect(() => {
+    const fetchWorkouts = async () => {
+      try {
+        const response = await apiRequest('/api/workouts');
+        if (response) {
+          const workouts = response.filter((workout: any) => 
+            workout.status === 'scheduled' || workout.status === 'in_progress'
+          );
+          setRemainingWorkouts(workouts.length);
+        }
+      } catch (error) {
+        console.error("Failed to fetch workouts:", error);
+        setRemainingWorkouts(0);
+      }
+    };
+    
+    fetchWorkouts();
+    // Refresh every 5 minutes
+    const intervalId = setInterval(fetchWorkouts, 5 * 60 * 1000);
+    
+    return () => clearInterval(intervalId);
+  }, []);
 
   // Toggle activity timer
   const toggleActivityTimer = (e: React.MouseEvent) => {
@@ -190,7 +216,7 @@ export default function ClockSection() {
                 className="font-medium text-indigo-700 bg-white px-2 py-1 rounded-md shadow-sm"
                 whileHover={{ y: -2, boxShadow: "0 4px 6px -1px rgba(99, 102, 241, 0.1)" }}
               >
-                1
+                {remainingWorkouts}
               </motion.span>
             </motion.div>
           </Link>
