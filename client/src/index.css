@@ -43,64 +43,72 @@
   }
 
   .text-shadow {
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
   }
   
   .text-shadow-lg {
-    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+  }
+  
+  .text-glow {
+    text-shadow: 0 0 10px rgba(124, 58, 237, 0.5);
   }
 
   .glass-effect {
     backdrop-filter: blur(10px);
-    background: rgba(255, 255, 255, 0.15);
+    background: rgba(15, 23, 42, 0.5);
+    border: 1px solid rgba(124, 58, 237, 0.1);
   }
   
   .gradient-purple {
-    background: linear-gradient(135deg, #8A2BE2 0%, #A12BE2 50%, #C71585 100%);
+    background: linear-gradient(135deg, #7C3AED 0%, #8B5CF6 50%, #A78BFA 100%);
   }
   
   .gradient-blue {
-    background: linear-gradient(135deg, #4158D0 0%, #C850C0 50%, #FFCC70 100%);
+    background: linear-gradient(135deg, #2563EB 0%, #3B82F6 50%, #60A5FA 100%);
   }
   
   .gradient-green {
-    background: linear-gradient(135deg, #43A047 0%, #66BB6A 50%, #81C784 100%);
+    background: linear-gradient(135deg, #059669 0%, #10B981 50%, #34D399 100%);
   }
   
   .glassmorphism {
-    background: rgba(255, 255, 255, 0.25);
+    background: rgba(15, 23, 42, 0.6);
     backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(124, 58, 237, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
   }
   
   .neomorphism {
-    background: #f0f0f3;
+    background: #1e1e2e;
     box-shadow: 
-      10px 10px 20px rgba(174, 174, 192, 0.4),
-      -10px -10px 20px rgba(255, 255, 255, 0.8);
+      5px 5px 10px rgba(0, 0, 0, 0.5),
+      -5px -5px 10px rgba(30, 41, 59, 0.2);
   }
   
   .neomorphism-inset {
-    background: #f0f0f3;
+    background: #1e1e2e;
     box-shadow: 
-      inset 5px 5px 10px rgba(174, 174, 192, 0.4),
-      inset -5px -5px 10px rgba(255, 255, 255, 0.8);
+      inset 3px 3px 6px rgba(0, 0, 0, 0.5),
+      inset -3px -3px 6px rgba(30, 41, 59, 0.2);
   }
   
   .card-hover {
     transition: all 0.3s ease;
+    border: 1px solid rgba(124, 58, 237, 0.05);
   }
   
   .card-hover:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(138, 43, 226, 0.15);
+    box-shadow: 0 10px 25px rgba(124, 58, 237, 0.2);
+    border: 1px solid rgba(124, 58, 237, 0.2);
   }
   
   .button-glow {
     position: relative;
     overflow: hidden;
     transition: all 0.3s ease;
+    border: 1px solid rgba(124, 58, 237, 0.3);
   }
   
   .button-glow:after {
@@ -110,13 +118,18 @@
     left: -50%;
     width: 200%;
     height: 200%;
-    background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 70%);
+    background: radial-gradient(circle, rgba(124, 58, 237, 0.3) 0%, rgba(124, 58, 237, 0) 70%);
     opacity: 0;
     transition: opacity 0.3s ease;
   }
   
   .button-glow:hover:after {
     opacity: 1;
+  }
+  
+  .button-glow:hover {
+    box-shadow: 0 0 15px rgba(124, 58, 237, 0.5);
+    border: 1px solid rgba(124, 58, 237, 0.5);
   }
 }
 
@@ -197,10 +210,11 @@
 
   body {
     @apply font-sans antialiased text-foreground;
-    background: linear-gradient(135deg, #f5f7fa 0%, #e4eaf5 100%);
+    background: linear-gradient(135deg, #0f1116 0%, #151823 100%);
     background-attachment: fixed;
     background-size: cover;
     position: relative;
+    color: #e2e8f0;
   }
 
   body::before {
@@ -211,26 +225,34 @@
     bottom: 0;
     left: 0;
     background-image: 
-      radial-gradient(circle at 20% 30%, rgba(138, 43, 226, 0.07) 0%, transparent 20%),
-      radial-gradient(circle at 80% 60%, rgba(199, 21, 133, 0.05) 0%, transparent 20%);
+      radial-gradient(circle at 20% 30%, rgba(124, 58, 237, 0.06) 0%, transparent 20%),
+      radial-gradient(circle at 80% 60%, rgba(56, 189, 248, 0.05) 0%, transparent 20%);
     pointer-events: none;
     z-index: -1;
   }
 
   ::-webkit-scrollbar {
-    width: 8px;
+    width: 6px;
   }
   
   ::-webkit-scrollbar-track {
-    background: #f5f7fa;
+    background: #1e1e2e;
   }
   
   ::-webkit-scrollbar-thumb {
-    background: #8A2BE2;
-    border-radius: 10px;
+    background: #7C3AED;
+    border-radius: 3px;
   }
   
   ::-webkit-scrollbar-thumb:hover {
-    background: #7923c2;
+    background: #9F7AEA;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    color: #f8fafc;
+  }
+  
+  p, span {
+    color: #cbd5e1;
   }
 }
